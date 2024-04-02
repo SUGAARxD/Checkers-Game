@@ -4,11 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
+        xmlns:behavior="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+        xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
         Title="MenuWindow" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
 
+    <Window.DataContext>
+        <vm:MenuVM/>
+    </Window.DataContext>
+    
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -26,36 +32,42 @@
                 Content="New Game"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding NewGameCommand}"
                 />
 
             <Button
                 Content="Load Game"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding LoadGameCommand}"
                 />
 
             <Button
                 Content="Custom Game"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding CustomGameCommand}"
                 />
 
             <Button
                 Content="How to play"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding HowToPlayCommand}"
                 />
 
             <Button
                 Content="Settings"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding SettingsCommand}"
                 />
 
             <Button
                 Content="Credits"
                 Margin="10"
                 FontSize="30"
+                Command="{Binding CreditsCommand}"
                 />
 
         </StackPanel>
