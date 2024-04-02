@@ -1,5 +1,7 @@
 ﻿
-
+using CheckersGame.View;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CheckersGame.ViewModel
@@ -19,9 +21,30 @@ namespace CheckersGame.ViewModel
             get
             {
                 if (_newGameCommand == null)
-                    _newGameCommand = new RelayCommand(null);
+                    _newGameCommand = new RelayCommand(ExecuteNewGame);
                 return _newGameCommand;
             }
+        }
+
+        private void ExecuteNewGame(object parameter)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "Do you want to allow Multiple Jump?",
+                "Multiple Jump", 
+                MessageBoxButton.YesNoCancel);
+
+            if (result == MessageBoxResult.Cancel)
+                return;
+
+            bool allowMultipleJump = result == MessageBoxResult.Yes;
+
+            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
+
+            GameWindow gameWindow = new GameWindow(allowMultipleJump);
+            gameWindow.Show();
+
+            thisWindow.Close();
+
         }
 
         private ICommand _loadGameCommand;
@@ -30,20 +53,15 @@ namespace CheckersGame.ViewModel
             get
             {
                 if (_loadGameCommand == null)
-                    _loadGameCommand = new RelayCommand(null);
+                    _loadGameCommand = new RelayCommand(ExecuteLoadGame);
                 return _loadGameCommand;
             }
         }
 
-        private ICommand _customGameCommand;
-        public ICommand CustomGameCommand
+        private void ExecuteLoadGame(object parameter)
         {
-            get
-            {
-                if (_customGameCommand == null)
-                    _customGameCommand = new RelayCommand(null);
-                return _customGameCommand;
-            }
+            LoadGameWindow loadGameWindow = new LoadGameWindow();
+            loadGameWindow.Show();
         }
 
         private ICommand _howToPlayCommand;

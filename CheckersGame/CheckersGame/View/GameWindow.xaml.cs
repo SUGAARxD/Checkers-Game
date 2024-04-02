@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using CheckersGame.ViewModel;
 
 namespace CheckersGame.View
 {
     /// <summary>
     /// Interaction logic for GameView.xaml
     /// </summary>
-    public partial class GameView : Window
+    public partial class GameWindow : Window
     {
-        public GameView()
+        public GameWindow(bool allowMultipleJump)
         {
             InitializeComponent();
+            DataContext = new GameVM(allowMultipleJump);
         }
+
+        public GameWindow(object game)
+        {
+            InitializeComponent();
+            DataContext = new GameVM(game);
+        }
+
     }
 }

@@ -62,12 +62,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\GameModel.cs" />
     <Compile Include="ViewModel\BaseVM.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
+    <Compile Include="ViewModel\LoadGameVM.cs" />
     <Compile Include="ViewModel\MenuVM.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="View\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoadGameWindow.xaml.cs">
+      <DependentUpon>LoadGameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MenuWindow.xaml.cs">
       <DependentUpon>MenuWindow.xaml</DependentUpon>
@@ -101,11 +106,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Resources\" />
+    <Folder Include="Saves\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\GameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoadGameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
