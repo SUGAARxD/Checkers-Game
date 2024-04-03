@@ -118,7 +118,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="resources\Database\" />
     <Folder Include="Saves\" />
   </ItemGroup>
   <ItemGroup>

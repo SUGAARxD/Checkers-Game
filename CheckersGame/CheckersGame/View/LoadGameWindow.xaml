@@ -13,9 +13,44 @@
     <Window.DataContext>
         <vm:LoadGameVM/>
     </Window.DataContext>
-
+    
     <Grid>
         
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ListBox
+            Grid.Row="0"
+            FontSize="30"
+            ItemsSource="{Binding Games}"
+            SelectedItem="{Binding SelectedListBoxItem}"
+            />
+
+        <StackPanel
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom">
+            
+            <Button
+                Content="Cancel"
+                Width="100"
+                FontSize="30"
+                Command="{Binding CancelCommand}"
+                />
+
+            <Button
+                Content="Load"
+                Width="100"
+                FontSize="30"
+                Margin="20,0,0,0"
+                Command="{Binding LoadGameCommand}"
+                />
+            
+        </StackPanel>
+        
     </Grid>
-    
+
 </Window>

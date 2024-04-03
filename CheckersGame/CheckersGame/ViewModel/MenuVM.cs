@@ -36,14 +36,11 @@ namespace CheckersGame.ViewModel
             if (result == MessageBoxResult.Cancel)
                 return;
 
-            bool allowMultipleJump = result == MessageBoxResult.Yes;
-
-            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
-
+            bool allowMultipleJump = (result == MessageBoxResult.Yes);
             GameWindow gameWindow = new GameWindow(allowMultipleJump);
             gameWindow.Show();
 
-            thisWindow.Close();
+            Application.Current.Windows.OfType<MenuWindow>().First().Close();
 
         }
 
@@ -81,12 +78,10 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteHowToPlay(object parameter)
         {
-            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
-
             HowToPlayWindow howToPlayWindow = new HowToPlayWindow();
             howToPlayWindow.Show();
 
-            thisWindow.Close();
+            Application.Current.Windows.OfType<MenuWindow>().First().Close();
         }
 
         private ICommand _settingsCommand;
@@ -102,12 +97,10 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteSettings(object parameter)
         {
-            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
-
             SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Show();
 
-            thisWindow.Close();
+            Application.Current.Windows.OfType<MenuWindow>().First().Close();
         }
 
         private ICommand _statisticsCommand;

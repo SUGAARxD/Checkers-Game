@@ -33,9 +33,27 @@ namespace CheckersGame.ViewModel
         private readonly string _savesFolderPath = "..\\..\\Saves";
         public ObservableCollection<string> Games { get; set; }
 
+        public string SelectedListBoxItem { get; set; }
+
         #endregion
 
         #region Commands
+
+        private ICommand _cancelCommand;
+        public ICommand CancelCommand
+        {
+            get
+            {
+                if (_cancelCommand == null)
+                    _cancelCommand = new RelayCommand(ExecuteCancel);
+                return _cancelCommand;
+            }
+        }
+
+        private void ExecuteCancel(object parameter)
+        {
+            Application.Current.Windows.OfType<LoadGameWindow>().First().Close();
+        }
 
         private ICommand _loadGameCommand;
         public ICommand LoadGameCommand
@@ -52,8 +70,7 @@ namespace CheckersGame.ViewModel
         {
 
 
-
-
+            /*EXECUTE LOAD LOGIC*/
 
             bool a = false;
             if (a /*to be completed, this is only for replacement*/)
