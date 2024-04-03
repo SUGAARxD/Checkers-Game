@@ -60,6 +60,10 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteLoadGame(object parameter)
         {
+            LoadGameWindow lastOpenedWindow= Application.Current.Windows.OfType<LoadGameWindow>().FirstOrDefault();
+            if (lastOpenedWindow != null)
+                lastOpenedWindow.Close();
+
             LoadGameWindow loadGameWindow = new LoadGameWindow();
             loadGameWindow.Show();
         }
@@ -70,9 +74,19 @@ namespace CheckersGame.ViewModel
             get
             {
                 if (_howToPlayCommand == null)
-                    _howToPlayCommand = new RelayCommand(null);
+                    _howToPlayCommand = new RelayCommand(ExecuteHowToPlay);
                 return _howToPlayCommand;
             }
+        }
+
+        private void ExecuteHowToPlay(object parameter)
+        {
+            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
+
+            HowToPlayWindow howToPlayWindow = new HowToPlayWindow();
+            howToPlayWindow.Show();
+
+            thisWindow.Close();
         }
 
         private ICommand _settingsCommand;
@@ -81,9 +95,40 @@ namespace CheckersGame.ViewModel
             get
             {
                 if (_settingsCommand == null)
-                    _settingsCommand = new RelayCommand(null);
+                    _settingsCommand = new RelayCommand(ExecuteSettings);
                 return _settingsCommand;
             }
+        }
+
+        private void ExecuteSettings(object parameter)
+        {
+            MenuWindow thisWindow = Application.Current.Windows.OfType<MenuWindow>().First();
+
+            SettingsWindow settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
+
+            thisWindow.Close();
+        }
+
+        private ICommand _statisticsCommand;
+        public ICommand StatisticsCommand
+        {
+            get
+            {
+                if (_statisticsCommand == null)
+                    _statisticsCommand = new RelayCommand(ExecuteStatistics);
+                return _statisticsCommand;
+            }
+        }
+
+        private void ExecuteStatistics(object parameter)
+        {
+            StatisticsWindow lastOpenedWindow = Application.Current.Windows.OfType<StatisticsWindow>().FirstOrDefault();
+            if (lastOpenedWindow != null)
+                lastOpenedWindow.Close();
+
+            StatisticsWindow statisticsWindow = new StatisticsWindow();
+            statisticsWindow.Show();
         }
 
         private ICommand _creditsCommand;
@@ -92,9 +137,19 @@ namespace CheckersGame.ViewModel
             get
             {
                 if (_creditsCommand == null)
-                    _creditsCommand = new RelayCommand(null);
+                    _creditsCommand = new RelayCommand(ExecuteCredits);
                 return _creditsCommand;
             }
+        }
+
+        private void ExecuteCredits(object parameter)
+        {
+            CreditsWindow lastOpenedWindow = Application.Current.Windows.OfType<CreditsWindow>().FirstOrDefault();
+            if (lastOpenedWindow != null)
+                lastOpenedWindow.Close();
+
+            CreditsWindow creditsWindow = new CreditsWindow();
+            creditsWindow.Show();
         }
 
         #endregion

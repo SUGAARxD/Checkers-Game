@@ -16,7 +16,6 @@ namespace CheckersGame.ViewModel
 
         public GameVM(object game)
         {
-            //les initializations
             _game = (GameModel)game;
         }
 

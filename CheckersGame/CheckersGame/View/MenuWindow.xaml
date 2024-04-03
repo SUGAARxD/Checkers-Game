@@ -60,7 +60,7 @@
                 Content="Statistics"
                 Margin="10"
                 FontSize="30"
-                Command="{Binding CreditsCommand}"
+                Command="{Binding StatisticsCommand}"
                 />
 
             <Button
