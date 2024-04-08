@@ -15,9 +15,14 @@
     </Window.DataContext>
     
     <Grid>
-        
-        
-        
+
+        <ItemsControl
+            ItemsSource="{Binding Board}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            
+        </ItemsControl>
+
     </Grid>
     
 </Window>

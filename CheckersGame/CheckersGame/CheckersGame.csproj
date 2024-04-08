@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\GameModel.cs" />
+    <Compile Include="Model\PieceModel.cs" />
     <Compile Include="ViewModel\BaseVM.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />
@@ -119,7 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="resources\Database\" />
-    <Folder Include="Saves\" />
+    <Folder Include="resources\Images\" />
+    <Folder Include="resources\Saves\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\CreditsWindow.xaml">
