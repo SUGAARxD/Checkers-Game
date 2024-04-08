@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace CheckersGame.Model
@@ -54,31 +55,15 @@ namespace CheckersGame.Model
 
         public void MovePiece(PieceModel piece, Tuple<int, int> newPosition)
         {
-            switch(piece.Type)
+            int xDifference = Math.Abs(piece.XPos - newPosition.Item1) / 2;
+            int yDifference = Math.Abs(piece.YPos - newPosition.Item2) / 2;
+            if (xDifference > 1 && yDifference > 1)
             {
-                default:
-                    break;
-                case PieceType.WhitePawn:
-
-
-
-                    break;
-                case PieceType.WhiteKing:
-
-
-
-                    break; 
-                case PieceType.RedPawn:
-
-
-
-                    break;
-                case PieceType.RedKing:
-
-
-
-                    break;
+                _board[(piece.XPos + newPosition.Item1) / 2][(piece.YPos + newPosition.Item2) / 2] = null;
             }
+
+            _board[newPosition.Item1][newPosition.Item2] = piece;
+            _board[piece.XPos][piece.YPos] = null;
         }
 
         public List<Tuple<int, int>> AvailableMoves(PieceModel piece)
@@ -89,87 +74,109 @@ namespace CheckersGame.Model
             {
                 default:
                     break;
+
                 case PieceType.WhitePawn:
 
-                    if (piece.XPos < numberOfLines - 1)
-                    {
+                    DownAvailableMoves(piece, PieceType.RedPawn, ref availableMoves);
 
-                        if (piece.YPos > 0)
-                        {
-                            PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos - 1];
-                            if (nextPiece == null)
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
-                            else if (nextPiece.Type == PieceType.RedPawn
-                                || nextPiece.Type == PieceType.RedKing
-                                && nextPiece.YPos > 0
-                                && nextPiece.XPos < numberOfLines - 1
-                                && _board[nextPiece.XPos + 1][nextPiece.YPos - 1] == null)
-
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos - 1));
-                        }
-
-                        if (piece.YPos < numberOfColumns - 1)
-                        {
-                            PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos + 1];
-                            if (nextPiece == null)
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
-                            else if (nextPiece.Type == PieceType.RedPawn
-                                || nextPiece.Type == PieceType.RedKing
-                                && nextPiece.YPos < numberOfColumns - 1
-                                && nextPiece.XPos < numberOfLines - 1
-                                && _board[nextPiece.XPos + 1][nextPiece.YPos + 1] == null)
-
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos + 1));
-                        }
-
-                    }
                     break;
+
                 case PieceType.WhiteKing:
 
-
+                    UpAvailableMoves(piece, PieceType.RedPawn, ref availableMoves);
+                    DownAvailableMoves(piece, PieceType.RedPawn, ref availableMoves);
 
                     break;
+
                 case PieceType.RedPawn:
 
-                    if (piece.XPos > 0)
-                    {
-                        if (piece.YPos > 0)
-                        {
-                            PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos - 1];
-                            if (nextPiece == null)
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
-                            else if (nextPiece.Type == PieceType.WhitePawn
-                                || nextPiece.Type == PieceType.WhiteKing
-                                && nextPiece.YPos > 0
-                                && nextPiece.XPos > 0
-                                && _board[nextPiece.XPos - 1][nextPiece.YPos - 1] == null)
+                    UpAvailableMoves(piece, PieceType.WhitePawn, ref availableMoves);
 
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos - 1));
-                        }
-
-                        if (piece.YPos < numberOfColumns - 1)
-                        {
-                            PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos + 1];
-                            if (nextPiece == null)
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
-                            else if (nextPiece.Type == PieceType.WhitePawn
-                                || nextPiece.Type == PieceType.WhiteKing
-                                && nextPiece.YPos < numberOfColumns - 1
-                                && nextPiece.XPos > 0
-                                && _board[nextPiece.XPos - 1][nextPiece.YPos + 1] == null)
-
-                                availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos + 1));
-                        }
-                    }
                     break;
+
                 case PieceType.RedKing:
 
+                    UpAvailableMoves(piece, PieceType.WhitePawn, ref availableMoves);
+                    DownAvailableMoves(piece, PieceType.WhitePawn, ref availableMoves);
 
 
                     break;
             }
 
             return availableMoves;
+        }
+
+        private void UpAvailableMoves(PieceModel piece, PieceType enemyType, ref List<Tuple<int,int>> availableMoves)
+        {
+            PieceType enemyKingType = (enemyType == PieceType.WhitePawn) ? PieceType.WhiteKing : PieceType.RedKing;
+
+            if (piece.XPos > 0)
+            {
+                if (piece.YPos > 0)
+                {
+                    PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos - 1];
+                    if (nextPiece == null)
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
+                    else if (nextPiece.Type == enemyType
+                        || nextPiece.Type == enemyKingType
+                        && nextPiece.YPos > 0
+                        && nextPiece.XPos > 0
+                        && _board[nextPiece.XPos - 1][nextPiece.YPos - 1] == null)
+
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos - 1));
+                }
+
+                if (piece.YPos < numberOfColumns - 1)
+                {
+                    PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos + 1];
+                    if (nextPiece == null)
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
+                    else if (nextPiece.Type == enemyType
+                        || nextPiece.Type == enemyKingType
+                        && nextPiece.YPos < numberOfColumns - 1
+                        && nextPiece.XPos > 0
+                        && _board[nextPiece.XPos - 1][nextPiece.YPos + 1] == null)
+
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos + 1));
+                }
+            }
+        }
+        private void DownAvailableMoves(PieceModel piece, PieceType enemyType, ref List<Tuple<int, int>> availableMoves)
+        {
+            PieceType enemyKingType = (enemyType == PieceType.WhitePawn) ? PieceType.WhiteKing : PieceType.RedKing;
+
+            if (piece.XPos < numberOfLines - 1)
+            {
+
+                if (piece.YPos > 0)
+                {
+                    PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos - 1];
+                    if (nextPiece == null)
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
+                    else if (nextPiece.Type == enemyType
+                        || nextPiece.Type == enemyKingType
+                        && nextPiece.YPos > 0
+                        && nextPiece.XPos < numberOfLines - 1
+                        && _board[nextPiece.XPos + 1][nextPiece.YPos - 1] == null)
+
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos - 1));
+                }
+
+                if (piece.YPos < numberOfColumns - 1)
+                {
+                    PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos + 1];
+                    if (nextPiece == null)
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos, nextPiece.YPos));
+                    else if (nextPiece.Type == enemyType
+                        || nextPiece.Type == enemyKingType
+                        && nextPiece.YPos < numberOfColumns - 1
+                        && nextPiece.XPos < numberOfLines - 1
+                        && _board[nextPiece.XPos + 1][nextPiece.YPos + 1] == null)
+
+                        availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos + 1));
+                }
+
+            }
         }
 
         #endregion
