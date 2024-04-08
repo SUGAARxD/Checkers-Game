@@ -1,7 +1,5 @@
 ﻿using CheckersGame.Model;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
 
 namespace CheckersGame.ViewModel
 {

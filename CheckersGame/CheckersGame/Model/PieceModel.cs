@@ -4,14 +4,18 @@ namespace CheckersGame.Model
     internal class PieceModel
     {
 
-        public PieceModel()
+        public PieceModel(PieceType pieceType)
         {
-            IsKing = false;
+            Type = pieceType;
         }
 
         #region Properties and members
 
-        public bool IsKing { set; get; }
+        public PieceType Type { get; set; }
+
+        public int XPos { get; set; }
+        public int YPos { get; set; }
+
 
         #endregion
 
