@@ -16,6 +16,7 @@ namespace CheckersGame.Model
         public int XPos { get; set; }
         public int YPos { get; set; }
 
+        public bool IsKing { get; set; }
 
         #endregion
 

@@ -5,24 +5,70 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
         xmlns:vm="clr-namespace:CheckersGame.ViewModel"
+        xmlns:behavior="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
         mc:Ignorable="d"
         Title="Checkers" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
-    
+
     <Window.DataContext>
         <vm:GameVM/>
     </Window.DataContext>
-    
+
     <Grid>
 
-        <ItemsControl
-            ItemsSource="{Binding Board}"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
-            
-        </ItemsControl>
+        <Border 
+    BorderThickness="1"
+    BorderBrush="Black"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+            <ItemsControl
+        ItemsSource="{Binding Board}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ItemsControl
+                    ItemsSource="{Binding}">
+
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Height="80"
+                                        Width="80"
+                                        BorderThickness="1"
+                                        BorderBrush="{Binding CellBorderColor}">
+                                        <Button
+                                            Command="{Binding OnClickCommand}"
+                                            CommandParameter="{Binding}"
+                                            >
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Grid>
+                                                        <Image 
+                                                            Source="{Binding Path=BackgroundImage}"
+                                                            Stretch="UniformToFill"/>
+                                                        <Image
+                                                            Source="{Binding Path=PieceImage}"
+                                                            Stretch="UniformToFill"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
 
     </Grid>
-    
+
 </Window>

@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace CheckersGame.ViewModel
 {
-    internal class MenuVM : BaseVM
+    internal class MenuVM : Base
     {
         public MenuVM()
         {

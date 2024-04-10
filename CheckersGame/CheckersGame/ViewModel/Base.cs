@@ -2,7 +2,7 @@
 
 namespace CheckersGame.ViewModel
 {
-    public class BaseVM : INotifyPropertyChanged
+    public class Base : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

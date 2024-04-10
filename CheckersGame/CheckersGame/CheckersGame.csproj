@@ -65,7 +65,8 @@
     <Compile Include="Model\GameModel.cs" />
     <Compile Include="Model\PieceModel.cs" />
     <Compile Include="Model\PieceType.cs" />
-    <Compile Include="ViewModel\BaseVM.cs" />
+    <Compile Include="Model\BoardCellModel.cs" />
+    <Compile Include="ViewModel\Base.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />
     <Compile Include="ViewModel\MenuVM.cs" />
@@ -120,9 +121,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="resources\Database\" />
-    <Folder Include="resources\Images\" />
-    <Folder Include="resources\Saves\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\CreditsWindow.xaml">
