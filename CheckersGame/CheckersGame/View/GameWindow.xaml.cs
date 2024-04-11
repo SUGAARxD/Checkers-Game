@@ -12,13 +12,13 @@ namespace CheckersGame.View
         public GameWindow(bool allowMultipleJump, Theme theme)
         {
             InitializeComponent();
-            DataContext = new GameVM(allowMultipleJump,  theme);
+            DataContext = new GameVM(allowMultipleJump, theme);
         }
 
-        public GameWindow(object game,  Theme theme)
+        public GameWindow(object game, Theme theme)
         {
             InitializeComponent();
-            DataContext = new GameVM(game,  theme);
+            DataContext = new GameVM(game, theme);
         }
 
     }

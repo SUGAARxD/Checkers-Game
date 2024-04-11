@@ -11,8 +11,8 @@ namespace CheckersGame.ViewModel
     {
         public MenuVM()
         {
-            _theme = new Theme();
-            FileHelper.InitTheme(_theme);
+            FileHelper.InitFileHelper();
+            FileHelper.InitTheme(ref _theme);
         }
 
         #region Properties and members

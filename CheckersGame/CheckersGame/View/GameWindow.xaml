@@ -78,30 +78,42 @@
         <StackPanel
             Grid.Column="1"
             Margin="10,100,0,0">
-            
-            <Label
-                Content="Someone's turn"
-                FontSize="30"
-                BorderBrush="Black"
-                BorderThickness="0,0,0,1"
-                />
 
             <StackPanel
                 Orientation="Horizontal">
 
                 <Label
-                Content="White pieces left:"
-                FontSize="30"
-                BorderBrush="Black"
-                BorderThickness="0,0,0,1"
+                    Content="Make a move:"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                        />
+
+                <Label
+                    Content="{Binding CurrentPieceTurn}"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
                     />
+
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Horizontal">
+
+                <Label
+                    Content="White pieces left:"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                        />
             
-            <Label
-                Content="{Binding NumberOfWhitePieces}"
-                FontSize="30"
-                BorderBrush="Black"
-                BorderThickness="0,0,0,1"
-                />
+                <Label
+                    Content="{Binding NumberOfWhitePieces}"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                    />
                 
             </StackPanel>
             
@@ -109,18 +121,18 @@
                 Orientation="Horizontal">
 
                 <Label
-                Content="Red pieces left:"
-                FontSize="30"
-                BorderBrush="Black"
-                BorderThickness="0,0,0,1"
-                    />
+                    Content="Red pieces left:"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                        />
 
                 <Label
-                Content="{Binding NumberOfRedPieces}"
-                FontSize="30"
-                BorderBrush="Black"
-                BorderThickness="0,0,0,1"
-                    />
+                    Content="{Binding NumberOfRedPieces}"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                        />
 
             </StackPanel>
 

@@ -32,7 +32,6 @@
                 Content="New Game"
                 Margin="10"
                 FontSize="30"
-                BorderBrush="{Binding MyTheme.NormalBorderColor}"
                 Command="{Binding NewGameCommand}"
                 />
 

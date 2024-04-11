@@ -12,16 +12,17 @@ namespace CheckersGame.ViewModel
         {
         }
 
-        public GameVM(bool allowMultipleJump,  Theme theme)
+        public GameVM(bool allowMultipleJump, Theme theme)
         {
             _theme = theme;
             _game = new GameModel();
             Init();
             UpdateBoard();
             _game.AllowMultipleJump = allowMultipleJump;
+            CurrentPieceTurn = "white";
         }
 
-        public GameVM(object game,  Theme theme)
+        public GameVM(object game, Theme theme)
         {
             _theme = theme;
             _game = (GameModel)game;
@@ -60,6 +61,7 @@ namespace CheckersGame.ViewModel
                 NotifyPropertyChanged(nameof(NumberOfWhitePieces));
             }
         }
+
         private int _numberOfRedPieces;
         public int NumberOfRedPieces
         {
@@ -70,6 +72,18 @@ namespace CheckersGame.ViewModel
                 NotifyPropertyChanged(nameof(NumberOfRedPieces));
             }
         }
+
+        private string _currentPieceTurn;
+        public string CurrentPieceTurn
+        {
+            get => _currentPieceTurn;
+            set
+            {
+                _currentPieceTurn = value;
+                NotifyPropertyChanged(nameof(CurrentPieceTurn));
+            }
+        }
+
 
         #endregion
 
@@ -153,6 +167,12 @@ namespace CheckersGame.ViewModel
             }
         }
 
+
+        /// 
+        /// 
+        ///    TO BE MOVED
+        ///
+        /// 
         private ImageSource GetImage(string imagePath)
         {
             if (string.IsNullOrEmpty(imagePath))

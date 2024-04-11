@@ -1,3 +1,13 @@
 [
-
+  {
+    "NormalBorderColor": "#000000",
+    "AvailableMoveBorderColor": "#7e00de",
+    "SelectedCellBorderColor": "#00f21d",
+    "WhiteSquareImagePath": "..\\..\\Resources\\Images\\white_square.jpg",
+    "BlackSquareImagePath": "..\\..\\Resources\\Images\\black_square.jpg",
+    "WhitePieceImagePath": "..\\..\\Resources\\Images\\white_piece.png",
+    "WhiteKingImagePath": "..\\..\\Resources\\Images\\white_king.png",
+    "RedPieceImagePath": "..\\..\\Resources\\Images\\red_piece.png",
+    "RedKingImagePath": "..\\..\\Resources\\Images\\red_king.png"
+  }
 ]

@@ -7,7 +7,7 @@ namespace CheckersGame.Model
     {
         #region Properties and members
 
-        private string _normalBorderColor = "#00d5ff";
+        private string _normalBorderColor;
         public string NormalBorderColor
         {
             get => _normalBorderColor;
@@ -18,7 +18,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _availableMoveBorderColor = "#7e00de";
+        private string _availableMoveBorderColor;
         public string AvailableMoveBorderColor
         {
             get => _availableMoveBorderColor;
@@ -29,7 +29,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _selectedCellBorderColor = "#00f21d";
+        private string _selectedCellBorderColor;
         public string SelectedCellBorderColor
         {
             get => _selectedCellBorderColor;
@@ -40,7 +40,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _whiteSquareImagePath = "..\\..\\Resources\\Images\\white_square.jpg";
+        private string _whiteSquareImagePath;
         public string WhiteSquareImagePath
         {
             get => _whiteSquareImagePath;
@@ -51,7 +51,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _blackSquareImagePath = "..\\..\\Resources\\Images\\black_square.jpg";
+        private string _blackSquareImagePath;
         public string BlackSquareImagePath
         {
             get => _blackSquareImagePath;
@@ -62,7 +62,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _whitePieceImagePath = "..\\..\\Resources\\Images\\white_piece.png";
+        private string _whitePieceImagePath;
         public string WhitePieceImagePath
         {
             get => _whitePieceImagePath;
@@ -73,7 +73,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _whiteKingImagePath = "..\\..\\Resources\\Images\\white_king.png";
+        private string _whiteKingImagePath;
         public string WhiteKingImagePath
         {
             get => _whiteKingImagePath;
@@ -84,7 +84,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _redPieceImagePath = "..\\..\\Resources\\Images\\red_piece.png";
+        private string _redPieceImagePath;
         public string RedPieceImagePath
         {
             get => _redPieceImagePath;
@@ -95,7 +95,7 @@ namespace CheckersGame.Model
             }
         }
 
-        private string _redKingImagePath = "..\\..\\Resources\\Images\\red_king.png";
+        private string _redKingImagePath;
         public string RedKingImagePath
         {
             get => _redKingImagePath;
