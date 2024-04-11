@@ -1,6 +1,6 @@
 ﻿using CheckersGame.Model;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
@@ -15,7 +15,7 @@ namespace CheckersGame.ViewModel
         public GameVM(bool allowMultipleJump)
         {
             _game = new GameModel();
-            InitBoard();
+            Init();
             UpdateBoard();
             _game.AllowMultipleJump = allowMultipleJump;
         }
@@ -23,7 +23,7 @@ namespace CheckersGame.ViewModel
         public GameVM(object game)
         {
             _game = (GameModel)game;
-            InitBoard();
+            Init();
             UpdateBoard();
         }
 
@@ -33,26 +33,47 @@ namespace CheckersGame.ViewModel
 
         public ObservableCollection<ObservableCollection<BoardCellModel>> Board { get; set; }
 
-        public BoardCellModel SelectedPiece { get; set; } 
+        public BoardCellModel SelectedPiece { get; set; }
 
         private List<Tuple<int, int>> _availableMoves;
 
+        private int _numberOfWhitePieces;
+        public int NumberOfWhitePieces
+        {
+            get => _numberOfWhitePieces;
+            set
+            {
+                _numberOfWhitePieces = value;
+                NotifyPropertyChanged(nameof(NumberOfWhitePieces));
+            }
+        }
+        private int _numberOfRedPieces;
+        public int NumberOfRedPieces
+        {
+            get => _numberOfRedPieces;
+            set
+            {
+                _numberOfRedPieces = value;
+                NotifyPropertyChanged(nameof(NumberOfRedPieces));
+            }
+        }
+
         private readonly string _normalBorderColor = "#000000";
-        private readonly string _possibleMoveBorderColor = "#7e00de";
+        private readonly string _availableMoveBorderColor = "#7e00de";
         private readonly string _selectedCellBorderColor = "#00f21d";
 
         private readonly string _whiteSquareImagePath = "..\\..\\Resources\\Images\\white_square.jpg";
         private readonly string _blackSquareImagePath = "..\\..\\Resources\\Images\\black_square.jpg";
-        private readonly string _whitePawnImagePath = "..\\..\\Resources\\Images\\white_pawn.png";
+        private readonly string _whitePieceImagePath = "..\\..\\Resources\\Images\\white_piece.png";
         private readonly string _whiteKingImagePath = "..\\..\\Resources\\Images\\white_king.png";
-        private readonly string _redPawnImagePath = "..\\..\\Resources\\Images\\red_pawn.png";
+        private readonly string _redPieceImagePath = "..\\..\\Resources\\Images\\red_piece.png";
         private readonly string _redKingImagePath = "..\\..\\Resources\\Images\\red_king.png";
 
         #endregion
 
         #region Methods
 
-        private void InitBoard()
+        private void Init()
         {
             Board = new ObservableCollection<ObservableCollection<BoardCellModel>>();
             for (int index = 0; index < GameModel.numberOfLines; index++)
@@ -87,37 +108,40 @@ namespace CheckersGame.ViewModel
 
         private void UpdateBoard()
         {
-            var board = _game.GetBoard();
+            NumberOfWhitePieces = 0;
+            NumberOfRedPieces = 0;
             for (int index = 0; index < GameModel.numberOfLines; index++)
             {
                 for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
                 {
-                    PieceModel piece = board[index][jndex];
-
-                    if (piece == null)
+                    if (_game.PieceIsNull(index, jndex))
                         Board[index][jndex].PieceImage = null;
                     else
                     {
-                        switch (piece.Type)
+                        switch (_game.GetPieceTypeForPiece(index, jndex))
                         {
                             default:
                                 break;
 
-                            case PieceType.WhitePawn:
+                            case PieceType.WhitePiece:
 
-                                if (piece.IsKing)
+                                NumberOfWhitePieces++;
+
+                                if (_game.IsPieceKing(index, jndex))
                                     Board[index][jndex].PieceImage = GetImage(_whiteKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_whitePawnImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_whitePieceImagePath);
 
                                 break;
 
-                            case PieceType.RedPawn:
+                            case PieceType.RedPiece:
 
-                                if (piece.IsKing)
+                                NumberOfRedPieces++;
+
+                                if (_game.IsPieceKing(index, jndex))
                                     Board[index][jndex].PieceImage = GetImage(_redKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_redPawnImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_redPieceImagePath);
 
                                 break;
 
@@ -138,43 +162,44 @@ namespace CheckersGame.ViewModel
         private void ExecuteClickAction(object parameter)
         {
             BoardCellModel clickedCell = parameter as BoardCellModel;
-            PieceModel currentPiece = _game.GetPiece(clickedCell.XPos, clickedCell.YPos);
-            if (currentPiece == null)
+            if (SelectedPiece == null && !_game.PieceIsNull(clickedCell.XPos, clickedCell.YPos))
             {
-                if (SelectedPiece != null && IsInAvailableMoves(clickedCell))
+                SelectedPiece = clickedCell;
+                SelectedPiece.CellBorderColor = _selectedCellBorderColor;
+
+                _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
+                ColorAvailableMovesBorder();
+            }
+            else
+            {
+                if (IsInAvailableMoves(clickedCell))
                 {
                     _game.MovePiece(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos));
                     UpdateBoard();
-                    Reset();
-                    return;
                 }
-
                 Reset();
-                return;
             }
-            else if (SelectedPiece != null)
-            {
-                Reset();
-                return;
-            }
-            SelectedPiece = clickedCell;
-            SelectedPiece.CellBorderColor = _selectedCellBorderColor;
+        }
 
-            _availableMoves = _game.AvailableMoves(currentPiece);
+        private void ColorAvailableMovesBorder()
+        {
             foreach (var position in _availableMoves)
             {
-                Board[position.Item1][position.Item2].CellBorderColor = _possibleMoveBorderColor;
+                Board[position.Item1][position.Item2].CellBorderColor = _availableMoveBorderColor;
             }
         }
 
         private void Reset()
         {
-            SelectedPiece = null;
-            for (int index = 0; index < GameModel.numberOfLines; index++)
+            if (SelectedPiece != null)
             {
-                for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
+                SelectedPiece = null;
+                for (int index = 0; index < GameModel.numberOfLines; index++)
                 {
-                    Board[index][jndex].CellBorderColor = _normalBorderColor;
+                    for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
+                    {
+                        Board[index][jndex].CellBorderColor = _normalBorderColor;
+                    }
                 }
             }
         }

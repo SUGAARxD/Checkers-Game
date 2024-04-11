@@ -66,6 +66,7 @@
     <Compile Include="Model\PieceModel.cs" />
     <Compile Include="Model\PieceType.cs" />
     <Compile Include="Model\BoardCellModel.cs" />
+    <Compile Include="Model\Theme.cs" />
     <Compile Include="ViewModel\Base.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />

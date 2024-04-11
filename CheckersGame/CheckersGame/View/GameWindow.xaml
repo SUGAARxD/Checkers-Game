@@ -17,17 +17,23 @@
 
     <Grid>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
         <Border 
-    BorderThickness="1"
-    BorderBrush="Black"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center">
+            Grid.Column="0"
+            BorderThickness="1"
+            BorderBrush="Black"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center">
             <ItemsControl
-        ItemsSource="{Binding Board}">
+                ItemsSource="{Binding Board}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ItemsControl
-                    ItemsSource="{Binding}">
+                            ItemsSource="{Binding}">
 
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -69,6 +75,57 @@
             </ItemsControl>
         </Border>
 
+        <StackPanel
+            Grid.Column="1"
+            Margin="10,100,0,0">
+            
+            <Label
+                Content="Someone's turn"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+
+            <StackPanel
+                Orientation="Horizontal">
+
+                <Label
+                Content="White pieces left:"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                    />
+            
+            <Label
+                Content="{Binding NumberOfWhitePieces}"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+                
+            </StackPanel>
+            
+            <StackPanel
+                Orientation="Horizontal">
+
+                <Label
+                Content="Red pieces left:"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                    />
+
+                <Label
+                Content="{Binding NumberOfRedPieces}"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                    />
+
+            </StackPanel>
+
+        </StackPanel>
+        
     </Grid>
 
 </Window>

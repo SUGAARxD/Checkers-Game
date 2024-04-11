@@ -7,45 +7,7 @@ namespace CheckersGame.Model
     {
         public GameModel()
         {
-
-            _board = new List<List<PieceModel>>();
-            for (int index = 0; index < numberOfLines; index++)
-            {
-                List<PieceModel> line = new List<PieceModel>();
-
-                for (int jndex = 0; jndex < numberOfColumns; jndex++)
-                {
-
-                    if (index < 3 && (index + jndex) % 2 == 1)
-                    {
-                        PieceModel piece = new PieceModel(PieceType.WhitePawn)
-                        {
-                            XPos = index,
-                            YPos = jndex,
-                            IsKing = false
-                        };
-
-                        line.Add(piece);
-                        continue;
-                    }
-
-                    if (index > 4 && (index + jndex) % 2 == 1)
-                    {
-                        PieceModel piece = new PieceModel(PieceType.RedPawn)
-                        {
-                            XPos = index,
-                            YPos = jndex,
-                            IsKing = false
-                        };
-                        line.Add(piece);
-                        continue;
-                    }
-
-                    line.Add(null);
-                }
-                _board.Add(line);
-            }
-
+            InitBoard();
         }
 
         #region Properties and members
@@ -60,6 +22,37 @@ namespace CheckersGame.Model
 
         #region Methods
 
+        private void InitBoard()
+        {
+            _board = new List<List<PieceModel>>();
+            for (int index = 0; index < numberOfLines; index++)
+            {
+                List<PieceModel> line = new List<PieceModel>();
+
+                for (int jndex = 0; jndex < numberOfColumns; jndex++)
+                {
+
+                    if (index < 3 && (index + jndex) % 2 == 1)
+                    {
+                        PieceModel piece = new PieceModel(PieceType.WhitePiece);
+
+                        line.Add(piece);
+                        continue;
+                    }
+
+                    if (index > 4 && (index + jndex) % 2 == 1)
+                    {
+                        PieceModel piece = new PieceModel(PieceType.RedPiece);
+                        line.Add(piece);
+                        continue;
+                    }
+
+                    line.Add(null);
+                }
+                _board.Add(line);
+            }
+        }
+
         public List<List<PieceModel>> GetBoard()
         {
             return _board;
@@ -67,27 +60,29 @@ namespace CheckersGame.Model
 
         public void MovePiece(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
         {
-            int xDifference = Math.Abs(prevPosition.Item1 - newPosition.Item1);
-            int yDifference = Math.Abs(prevPosition.Item2 - newPosition.Item2);
-            if (xDifference > 1 && yDifference > 1)
+            if (PieceMovedTwoCells(prevPosition, newPosition))
             {
                 _board[(prevPosition.Item1 + newPosition.Item1) / 2][(prevPosition.Item2 + newPosition.Item2) / 2] = null;
             }
 
-            _board[newPosition.Item1][newPosition.Item2] = GetPiece(prevPosition.Item1, prevPosition.Item2);
-            _board[newPosition.Item1][newPosition.Item2].XPos = newPosition.Item1;
-            _board[newPosition.Item1][newPosition.Item2].YPos = newPosition.Item2;
-            if (_board[newPosition.Item1][newPosition.Item2].Type == PieceType.WhitePawn && newPosition.Item1 == numberOfLines - 1)
+            _board[newPosition.Item1][newPosition.Item2] = _board[prevPosition.Item1][prevPosition.Item2];
+
+            if (_board[newPosition.Item1][newPosition.Item2].Type == PieceType.WhitePiece && newPosition.Item1 == numberOfLines - 1)
                 _board[newPosition.Item1][newPosition.Item2].IsKing = true;
-            if (_board[newPosition.Item1][newPosition.Item2].Type == PieceType.RedPawn && newPosition.Item1 == 0)
+
+            if (_board[newPosition.Item1][newPosition.Item2].Type == PieceType.RedPiece && newPosition.Item1 == 0)
                 _board[newPosition.Item1][newPosition.Item2].IsKing = true;
+
             _board[prevPosition.Item1][prevPosition.Item2] = null;
         }
 
-        public List<Tuple<int, int>> AvailableMoves(PieceModel piece)
+        public List<Tuple<int, int>> AvailableMoves(int xPos, int yPos)
         {
-      
+            PieceModel piece = _board[xPos][yPos];
             List<Tuple<int, int>> availableMoves = new List<Tuple<int, int>>();
+            if (piece == null)
+                return availableMoves;
+
             if (piece != null)
             {
                 switch (piece.Type)
@@ -95,19 +90,19 @@ namespace CheckersGame.Model
                     default:
                         break;
 
-                    case PieceType.WhitePawn:
+                    case PieceType.WhitePiece:
 
-                        DownAvailableMoves(piece, PieceType.RedPawn, ref availableMoves);
+                        DownAvailableMoves(Tuple.Create(xPos, yPos), PieceType.RedPiece, ref availableMoves);
                         if (piece.IsKing)
-                            UpAvailableMoves(piece, PieceType.RedPawn, ref availableMoves);
+                            UpAvailableMoves(Tuple.Create(xPos, yPos), PieceType.RedPiece, ref availableMoves);
 
                         break;
 
-                    case PieceType.RedPawn:
+                    case PieceType.RedPiece:
 
-                        UpAvailableMoves(piece, PieceType.WhitePawn, ref availableMoves);
+                        UpAvailableMoves(Tuple.Create(xPos, yPos), PieceType.WhitePiece, ref availableMoves);
                         if (piece.IsKing)
-                            DownAvailableMoves(piece, PieceType.WhitePawn, ref availableMoves);
+                            DownAvailableMoves(Tuple.Create(xPos, yPos), PieceType.WhitePiece, ref availableMoves);
 
                         break;
                 }
@@ -116,77 +111,102 @@ namespace CheckersGame.Model
             return availableMoves;
         }
 
-        private void UpAvailableMoves(PieceModel piece, PieceType enemyType, ref List<Tuple<int,int>> availableMoves)
+        private void UpAvailableMoves(Tuple<int, int> piece, PieceType enemyType, ref List<Tuple<int,int>> availableMoves)
         {
-            if (piece.XPos > 0)
+            if (piece.Item1 > 0)
             {
-                if (piece.YPos > 0)
+                Tuple<int, int> nextPiecePos;
+                if (piece.Item2 > 0)
                 {
-                    PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos - 1];
+                    nextPiecePos = Tuple.Create(piece.Item1 - 1, piece.Item2 - 1);
+                    PieceModel nextPiece = _board[nextPiecePos.Item1][nextPiecePos.Item2];
                     if (nextPiece == null)
-                        availableMoves.Add(Tuple.Create(piece.XPos - 1, piece.YPos - 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1, nextPiecePos.Item2));
                     else if (nextPiece.Type == enemyType
-                        && nextPiece.YPos > 0
-                        && nextPiece.XPos > 0
-                        && _board[nextPiece.XPos - 1][nextPiece.YPos - 1] == null)
+                        && nextPiecePos.Item1 > 0
+                        && nextPiecePos.Item2 > 0
+                        && _board[nextPiecePos.Item1 - 1][nextPiecePos.Item2 - 1] == null)
 
-                        availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos - 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1 - 1, nextPiecePos.Item2 - 1));
                 }
 
-                if (piece.YPos < numberOfColumns - 1)
+                if (piece.Item2 < numberOfColumns - 1)
                 {
-                    PieceModel nextPiece = _board[piece.XPos - 1][piece.YPos + 1];
+                    nextPiecePos = Tuple.Create(piece.Item1 - 1, piece.Item2 + 1);
+                    PieceModel nextPiece = _board[nextPiecePos.Item1][nextPiecePos.Item2];
                     if (nextPiece == null)
-                        availableMoves.Add(Tuple.Create(piece.XPos - 1, piece.YPos + 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1, nextPiecePos.Item2));
                     else if (nextPiece.Type == enemyType
-                        && nextPiece.YPos < numberOfColumns - 1
-                        && nextPiece.XPos > 0
-                        && _board[nextPiece.XPos - 1][nextPiece.YPos + 1] == null)
+                        && nextPiecePos.Item1 > 0
+                        && nextPiecePos.Item2 < numberOfColumns - 1
+                        && _board[nextPiecePos.Item1 - 1][nextPiecePos.Item2 + 1] == null)
 
-                        availableMoves.Add(Tuple.Create(nextPiece.XPos - 1, nextPiece.YPos + 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1 - 1, nextPiecePos.Item2 + 1));
                 }
             }
         }
-        private void DownAvailableMoves(PieceModel piece, PieceType enemyType, ref List<Tuple<int, int>> availableMoves)
+        private void DownAvailableMoves(Tuple<int, int> piece, PieceType enemyType, ref List<Tuple<int, int>> availableMoves)
         {
 
-            if (piece.XPos < numberOfLines - 1)
+            if (piece.Item1 < numberOfLines - 1)
             {
-
-                if (piece.YPos > 0)
+                Tuple<int, int> nextPiecePos;
+                if (piece.Item2 > 0)
                 {
-                    PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos - 1];
+                    nextPiecePos = Tuple.Create(piece.Item1 + 1, piece.Item2 - 1);
+                    PieceModel nextPiece = _board[nextPiecePos.Item1][nextPiecePos.Item2];
                     if (nextPiece == null)
-                        availableMoves.Add(Tuple.Create(piece.XPos + 1, piece.YPos - 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1, nextPiecePos.Item2));
                     else if (nextPiece.Type == enemyType
-                        && nextPiece.YPos > 0
-                        && nextPiece.XPos < numberOfLines - 1
-                        && _board[nextPiece.XPos + 1][nextPiece.YPos - 1] == null)
+                        && nextPiecePos.Item1 < numberOfLines - 1
+                        && nextPiecePos.Item2 > 0
+                        && _board[nextPiecePos.Item1 + 1][nextPiecePos.Item2 - 1] == null)
 
-                        availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos - 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1 + 1, nextPiecePos.Item2 - 1));
                 }
 
-                if (piece.YPos < numberOfColumns - 1)
+                if (piece.Item2 < numberOfColumns - 1)
                 {
-                    PieceModel nextPiece = _board[piece.XPos + 1][piece.YPos + 1];
+                    nextPiecePos = Tuple.Create(piece.Item1 + 1, piece.Item2 + 1);
+                    PieceModel nextPiece = _board[nextPiecePos.Item1][nextPiecePos.Item2];
                     if (nextPiece == null)
-                        availableMoves.Add(Tuple.Create(piece.XPos + 1, piece.YPos + 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1, nextPiecePos.Item2));
                     else if (nextPiece.Type == enemyType
-                        && nextPiece.YPos < numberOfColumns - 1
-                        && nextPiece.XPos < numberOfLines - 1
-                        && _board[nextPiece.XPos + 1][nextPiece.YPos + 1] == null)
+                        && nextPiecePos.Item1 < numberOfLines - 1
+                        && nextPiecePos.Item2 < numberOfColumns - 1
+                        && _board[nextPiecePos.Item1 + 1][nextPiecePos.Item2 + 1] == null)
 
-                        availableMoves.Add(Tuple.Create(nextPiece.XPos + 1, nextPiece.YPos + 1));
+                        availableMoves.Add(Tuple.Create(nextPiecePos.Item1 + 1, nextPiecePos.Item2 + 1));
                 }
 
             }
         }
 
-        public PieceModel GetPiece(int xPos, int yPos)
+        public bool PieceIsNull(int xPos, int yPos)
         {
-            return _board[xPos][yPos];
+            return _board[xPos][yPos] == null;
         }
 
+        public PieceType GetPieceTypeForPiece(int xPos, int yPos)
+        {
+            return _board[xPos][yPos].Type;
+        }
+
+        public bool IsPieceKing(int xPos, int yPos)
+        {
+            return _board[xPos][yPos].IsKing;
+        }
+
+        public bool PieceMovedTwoCells(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
+        {
+            int xDifference = Math.Abs(prevPosition.Item1 - newPosition.Item1);
+            int yDifference = Math.Abs(prevPosition.Item2 - newPosition.Item2);
+            if (xDifference > 1 && yDifference > 1)
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
 
     }
