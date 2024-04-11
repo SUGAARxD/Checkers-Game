@@ -67,6 +67,7 @@
     <Compile Include="Model\PieceType.cs" />
     <Compile Include="Model\BoardCellModel.cs" />
     <Compile Include="Model\Theme.cs" />
+    <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="ViewModel\Base.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />
@@ -117,6 +118,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Themes\ThemeNumber.json" />
+    <None Include="Resources\Themes\Themes.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

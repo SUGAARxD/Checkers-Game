@@ -1,4 +1,5 @@
-﻿
+﻿using CheckersGame.Model;
+using CheckersGame.Utilities;
 using CheckersGame.View;
 using System.Linq;
 using System.Windows;
@@ -10,8 +11,24 @@ namespace CheckersGame.ViewModel
     {
         public MenuVM()
         {
-
+            _theme = new Theme();
+            FileHelper.InitTheme(_theme);
         }
+
+        #region Properties and members
+
+        private Theme _theme;
+        public Theme MyTheme
+        {
+            get => _theme;
+            set
+            {
+                _theme = value;
+                NotifyPropertyChanged(nameof(MyTheme));
+            }
+        }
+
+        #endregion
 
         #region Commands
 
@@ -37,7 +54,7 @@ namespace CheckersGame.ViewModel
                 return;
 
             bool allowMultipleJump = (result == MessageBoxResult.Yes);
-            GameWindow gameWindow = new GameWindow(allowMultipleJump);
+            GameWindow gameWindow = new GameWindow(allowMultipleJump,  _theme);
             gameWindow.Show();
 
             Application.Current.Windows.OfType<MenuWindow>().First().Close();

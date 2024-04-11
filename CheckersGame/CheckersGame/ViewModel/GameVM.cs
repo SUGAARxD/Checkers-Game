@@ -12,16 +12,18 @@ namespace CheckersGame.ViewModel
         {
         }
 
-        public GameVM(bool allowMultipleJump)
+        public GameVM(bool allowMultipleJump,  Theme theme)
         {
+            _theme = theme;
             _game = new GameModel();
             Init();
             UpdateBoard();
             _game.AllowMultipleJump = allowMultipleJump;
         }
 
-        public GameVM(object game)
+        public GameVM(object game,  Theme theme)
         {
+            _theme = theme;
             _game = (GameModel)game;
             Init();
             UpdateBoard();
@@ -29,7 +31,18 @@ namespace CheckersGame.ViewModel
 
         #region Properties and members
 
-        private GameModel _game;
+        private Theme _theme;
+        public Theme MyTheme
+        {
+            get => _theme;
+            set
+            {
+                _theme = value;
+                NotifyPropertyChanged(nameof(MyTheme));
+            }
+        }
+
+        private readonly GameModel _game;
 
         public ObservableCollection<ObservableCollection<BoardCellModel>> Board { get; set; }
 
@@ -58,17 +71,6 @@ namespace CheckersGame.ViewModel
             }
         }
 
-        private readonly string _normalBorderColor = "#000000";
-        private readonly string _availableMoveBorderColor = "#7e00de";
-        private readonly string _selectedCellBorderColor = "#00f21d";
-
-        private readonly string _whiteSquareImagePath = "..\\..\\Resources\\Images\\white_square.jpg";
-        private readonly string _blackSquareImagePath = "..\\..\\Resources\\Images\\black_square.jpg";
-        private readonly string _whitePieceImagePath = "..\\..\\Resources\\Images\\white_piece.png";
-        private readonly string _whiteKingImagePath = "..\\..\\Resources\\Images\\white_king.png";
-        private readonly string _redPieceImagePath = "..\\..\\Resources\\Images\\red_piece.png";
-        private readonly string _redKingImagePath = "..\\..\\Resources\\Images\\red_king.png";
-
         #endregion
 
         #region Methods
@@ -89,15 +91,15 @@ namespace CheckersGame.ViewModel
 
                     if ((index + jndex) % 2 == 0)
                     {
-                        boardCell.BackgroundImage = GetImage(_whiteSquareImagePath);
+                        boardCell.BackgroundImage = GetImage(_theme.WhiteSquareImagePath);
                     }
                     else
                     {
-                        boardCell.BackgroundImage = GetImage(_blackSquareImagePath);
+                        boardCell.BackgroundImage = GetImage(_theme.BlackSquareImagePath);
                     }
 
                     boardCell.PieceImage = null;
-                    boardCell.CellBorderColor = _normalBorderColor;
+                    boardCell.CellBorderColor = _theme.NormalBorderColor;
                     line.Add(boardCell);
                 }
                 Board.Add(line);
@@ -128,9 +130,9 @@ namespace CheckersGame.ViewModel
                                 NumberOfWhitePieces++;
 
                                 if (_game.IsPieceKing(index, jndex))
-                                    Board[index][jndex].PieceImage = GetImage(_whiteKingImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_theme.WhiteKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_whitePieceImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_theme.WhitePieceImagePath);
 
                                 break;
 
@@ -139,9 +141,9 @@ namespace CheckersGame.ViewModel
                                 NumberOfRedPieces++;
 
                                 if (_game.IsPieceKing(index, jndex))
-                                    Board[index][jndex].PieceImage = GetImage(_redKingImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_theme.RedKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_redPieceImagePath);
+                                    Board[index][jndex].PieceImage = GetImage(_theme.RedPieceImagePath);
 
                                 break;
 
@@ -161,17 +163,22 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteClickAction(object parameter)
         {
-            BoardCellModel clickedCell = parameter as BoardCellModel;
+            if (!(parameter is BoardCellModel clickedCell))
+                return;
+
             if (SelectedPiece == null && !_game.PieceIsNull(clickedCell.XPos, clickedCell.YPos))
             {
                 SelectedPiece = clickedCell;
-                SelectedPiece.CellBorderColor = _selectedCellBorderColor;
+                SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
 
                 _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
                 ColorAvailableMovesBorder();
             }
             else
             {
+                if (SelectedPiece == null)
+                    return;
+
                 if (IsInAvailableMoves(clickedCell))
                 {
                     _game.MovePiece(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos));
@@ -185,21 +192,18 @@ namespace CheckersGame.ViewModel
         {
             foreach (var position in _availableMoves)
             {
-                Board[position.Item1][position.Item2].CellBorderColor = _availableMoveBorderColor;
+                Board[position.Item1][position.Item2].CellBorderColor = _theme.AvailableMoveBorderColor;
             }
         }
 
         private void Reset()
         {
-            if (SelectedPiece != null)
+            SelectedPiece = null;
+            for (int index = 0; index < GameModel.numberOfLines; index++)
             {
-                SelectedPiece = null;
-                for (int index = 0; index < GameModel.numberOfLines; index++)
+                for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
                 {
-                    for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
-                    {
-                        Board[index][jndex].CellBorderColor = _normalBorderColor;
-                    }
+                    Board[index][jndex].CellBorderColor = _theme.NormalBorderColor;
                 }
             }
         }

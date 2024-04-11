@@ -25,7 +25,7 @@
         <Border 
             Grid.Column="0"
             BorderThickness="1"
-            BorderBrush="Black"
+            BorderBrush="{Binding MyTheme.NormalBorderColor}"
             HorizontalAlignment="Right"
             VerticalAlignment="Center">
             <ItemsControl
