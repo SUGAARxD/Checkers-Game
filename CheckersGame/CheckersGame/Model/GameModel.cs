@@ -14,6 +14,7 @@ namespace CheckersGame.Model
 
         private List<List<PieceModel>> _board;
         public bool AllowMultipleJump { get; set; }
+        public string StarterPlayerColor { get; set; } = "red";
 
         public static readonly int numberOfLines = 8;
         public static readonly int numberOfColumns = 8;
@@ -207,6 +208,24 @@ namespace CheckersGame.Model
             }
             return false;
         }
+
+        public bool CanMakeAMove(PieceType pieceType)
+        {
+
+            for (int index = 0; index < numberOfLines; index++)
+            {
+                for (int jndex = 0; jndex < numberOfColumns; jndex++)
+                {
+                    PieceModel piece = _board[index][jndex];
+                    if (piece != null)
+                        if (piece.Type == pieceType && AvailableMoves(index, jndex).Count != 0)
+                            return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion
 
     }

@@ -9,16 +9,16 @@ namespace CheckersGame.View
     /// </summary>
     public partial class GameWindow : Window
     {
-        public GameWindow(bool allowMultipleJump, Theme theme)
+        public GameWindow(bool allowMultipleJump, CustomSettings settings)
         {
             InitializeComponent();
-            DataContext = new GameVM(allowMultipleJump, theme);
+            DataContext = new GameVM(allowMultipleJump, settings);
         }
 
-        public GameWindow(object game, Theme theme)
+        public GameWindow(object game, CustomSettings settings)
         {
             InitializeComponent();
-            DataContext = new GameVM(game, theme);
+            DataContext = new GameVM(game, settings);
         }
 
     }

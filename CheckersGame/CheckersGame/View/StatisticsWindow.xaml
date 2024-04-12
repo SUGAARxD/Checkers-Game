@@ -4,12 +4,37 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
+        xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="StatisticsWindow" Height="500" Width="600"
+        Title="StatisticsWindow" Height="300" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
+
+    <Window.DataContext>
+        <vm:StatisticsVM/>
+    </Window.DataContext>
     
     <Grid>
+
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+
+            <Label
+                Content="{Binding WhiteWinsLabel}"
+                Margin="0,0,0,10"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+            <Label
+                Content="{Binding RedWinsLabel}"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+
+        </StackPanel>
         
     </Grid>
     

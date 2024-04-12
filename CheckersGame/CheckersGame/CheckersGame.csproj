@@ -69,6 +69,7 @@
     <Compile Include="Model\PieceModel.cs" />
     <Compile Include="Model\PieceType.cs" />
     <Compile Include="Model\BoardCellModel.cs" />
+    <Compile Include="Model\CustomSettings.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="ViewModel\BaseNotify.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="ViewModel\LoadGameVM.cs" />
     <Compile Include="ViewModel\MenuVM.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\StatisticsVM.cs" />
     <Compile Include="View\CreditsWindow.xaml.cs">
       <DependentUpon>CreditsWindow.xaml</DependentUpon>
     </Compile>
@@ -121,6 +123,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Database\Statistics.json" />
+    <None Include="Resources\Settings\Settings.json" />
     <None Include="Resources\Themes\ThemeNumber.json" />
     <None Include="Resources\Themes\Themes.json" />
   </ItemGroup>

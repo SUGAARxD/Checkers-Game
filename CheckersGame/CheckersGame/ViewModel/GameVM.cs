@@ -1,8 +1,12 @@
 ﻿using CheckersGame.Model;
+using CheckersGame.Properties;
+using CheckersGame.Utilities;
+using CheckersGame.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
+using System.Linq;
+using System.Windows;
 
 namespace CheckersGame.ViewModel
 {
@@ -12,19 +16,18 @@ namespace CheckersGame.ViewModel
         {
         }
 
-        public GameVM(bool allowMultipleJump, Theme theme)
+        public GameVM(bool allowMultipleJump, CustomSettings settings)
         {
-            _theme = theme;
+            _settings = settings;
             _game = new GameModel();
             Init();
             UpdateBoard();
             _game.AllowMultipleJump = allowMultipleJump;
-            CurrentPieceTurn = "white";
         }
 
-        public GameVM(object game, Theme theme)
+        public GameVM(object game, CustomSettings settings)
         {
-            _theme = theme;
+            _settings = settings;
             _game = (GameModel)game;
             Init();
             UpdateBoard();
@@ -32,14 +35,14 @@ namespace CheckersGame.ViewModel
 
         #region Properties and members
 
-        private Theme _theme;
-        public Theme MyTheme
+        private CustomSettings _settings;
+        public CustomSettings MySettings
         {
-            get => _theme;
+            get => _settings;
             set
             {
-                _theme = value;
-                NotifyPropertyChanged(nameof(MyTheme));
+                _settings = value;
+                NotifyPropertyChanged(nameof(MySettings));
             }
         }
 
@@ -74,13 +77,13 @@ namespace CheckersGame.ViewModel
         }
 
         private string _currentPieceTurn;
-        public string CurrentPieceTurn
+        public string CurrentPlayerTurn
         {
             get => _currentPieceTurn;
             set
             {
                 _currentPieceTurn = value;
-                NotifyPropertyChanged(nameof(CurrentPieceTurn));
+                NotifyPropertyChanged(nameof(CurrentPlayerTurn));
             }
         }
 
@@ -107,15 +110,15 @@ namespace CheckersGame.ViewModel
 
                     if ((index + jndex) % 2 == 0)
                     {
-                        boardCell.BackgroundImage = GetImage(_theme.WhiteSquareImagePath);
+                        boardCell.BackgroundImage = FileHelper.GetImage(MySettings.MyTheme.WhiteSquareImagePath);
                     }
                     else
                     {
-                        boardCell.BackgroundImage = GetImage(_theme.BlackSquareImagePath);
+                        boardCell.BackgroundImage = FileHelper.GetImage(MySettings.MyTheme.BlackSquareImagePath);
                     }
 
                     boardCell.PieceImage = null;
-                    boardCell.CellBorderColor = _theme.NormalBorderColor;
+                    boardCell.CellBorderColor = MySettings.MyTheme.NormalBorderColor;
                     line.Add(boardCell);
                 }
                 Board.Add(line);
@@ -124,6 +127,7 @@ namespace CheckersGame.ViewModel
             SelectedPiece = null;
             _canChangeTheColor = false;
             _isMultipleJumpActive = false;
+            CurrentPlayerTurn = _game.StarterPlayerColor;
         }
 
         private void UpdateBoard()
@@ -150,9 +154,9 @@ namespace CheckersGame.ViewModel
                                 Board[index][jndex].Color = "white";
 
                                 if (_game.IsPieceKing(index, jndex))
-                                    Board[index][jndex].PieceImage = GetImage(_theme.WhiteKingImagePath);
+                                    Board[index][jndex].PieceImage = FileHelper.GetImage(MySettings.MyTheme.WhiteKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_theme.WhitePieceImagePath);
+                                    Board[index][jndex].PieceImage = FileHelper.GetImage(MySettings.MyTheme.WhitePieceImagePath);
 
                                 break;
 
@@ -163,9 +167,9 @@ namespace CheckersGame.ViewModel
                                 Board[index][jndex].Color = "red";
 
                                 if (_game.IsPieceKing(index, jndex))
-                                    Board[index][jndex].PieceImage = GetImage(_theme.RedKingImagePath);
+                                    Board[index][jndex].PieceImage = FileHelper.GetImage(MySettings.MyTheme.RedKingImagePath);
                                 else
-                                    Board[index][jndex].PieceImage = GetImage(_theme.RedPieceImagePath);
+                                    Board[index][jndex].PieceImage = FileHelper.GetImage(MySettings.MyTheme.RedPieceImagePath);
 
                                 break;
 
@@ -175,20 +179,6 @@ namespace CheckersGame.ViewModel
             }
         }
 
-
-        /// 
-        /// 
-        ///    TO BE MOVED
-        ///
-        /// 
-        private ImageSource GetImage(string imagePath)
-        {
-            if (string.IsNullOrEmpty(imagePath))
-                return null;
-            return new ImageSourceConverter()
-                .ConvertFromString(System.IO.Path.GetFullPath(imagePath)) as ImageSource;
-        }
-
         private void ExecuteClickAction(object parameter)
         {
             if (!(parameter is BoardCellModel clickedCell))
@@ -196,10 +186,10 @@ namespace CheckersGame.ViewModel
 
             if (SelectedPiece == null && !_game.PieceIsNull(clickedCell.XPos, clickedCell.YPos))
             {
-                if (clickedCell.Color == CurrentPieceTurn)
+                if (clickedCell.Color == CurrentPlayerTurn)
                 {
                     SelectedPiece = clickedCell;
-                    SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
+                    SelectedPiece.CellBorderColor = MySettings.MyTheme.SelectedCellBorderColor;
 
                     _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
                     ColorAvailableMovesBorder();
@@ -212,13 +202,13 @@ namespace CheckersGame.ViewModel
 
                 if (IsInAvailableMoves(clickedCell))
                 {
-
                     _game.MovePiece(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos));
                     UpdateBoard();
+                    VerifyIfGameEnds();
 
-                    if (_game.AllowMultipleJump == true)
+                    if (_game.IsTwoCellsDifference(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos)))
                     {
-                        if (_game.IsTwoCellsDifference(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos)))
+                        if (_game.AllowMultipleJump == true)
                         {
                             ResetBordersColor();
                             SelectedPiece = clickedCell;
@@ -227,7 +217,7 @@ namespace CheckersGame.ViewModel
                             UpdateAvailableMovesForMultipleJumps();
                             if (_availableMoves.Count > 0)
                             {
-                                SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
+                                SelectedPiece.CellBorderColor = MySettings.MyTheme.SelectedCellBorderColor;
                                 ColorAvailableMovesBorder();
                                 _isMultipleJumpActive = true;
                                 return;
@@ -247,7 +237,7 @@ namespace CheckersGame.ViewModel
                 if (_canChangeTheColor == true)
                 {
                     _canChangeTheColor = false;
-                    CurrentPieceTurn = (CurrentPieceTurn == "white") ? "red" : "white";
+                    CurrentPlayerTurn = (CurrentPlayerTurn == "white") ? "red" : "white";
                 }
             }
         }
@@ -256,7 +246,7 @@ namespace CheckersGame.ViewModel
         {
             foreach (var position in _availableMoves)
             {
-                Board[position.Item1][position.Item2].CellBorderColor = _theme.AvailableMoveBorderColor;
+                Board[position.Item1][position.Item2].CellBorderColor = MySettings.MyTheme.AvailableMoveBorderColor;
             }
         }
 
@@ -266,7 +256,7 @@ namespace CheckersGame.ViewModel
             {
                 for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
                 {
-                    Board[index][jndex].CellBorderColor = _theme.NormalBorderColor;
+                    Board[index][jndex].CellBorderColor = MySettings.MyTheme.NormalBorderColor;
                 }
             }
         }
@@ -294,6 +284,37 @@ namespace CheckersGame.ViewModel
             }
             _availableMoves = newAvailableMoves;
 
+        }
+
+        private void VerifyIfGameEnds()
+        {
+            string winner = string.Empty;
+            if (NumberOfWhitePieces == 0 || !_game.CanMakeAMove(PieceType.WhitePiece))
+                winner = "red";
+            else if (NumberOfRedPieces == 0 || !_game.CanMakeAMove(PieceType.RedPiece))
+                winner = "white";
+
+            if (!string.IsNullOrEmpty(winner))
+            {
+
+                ResetBordersColor();
+
+                FileHelper.UpdateWins(winner);
+
+                if (winner == "white")
+                {
+                    MessageBox.Show("White Wins!", "End Game!");
+                }
+                else
+                {
+                    MessageBox.Show("Red Wins!", "End Game!");
+                }
+
+                MenuWindow menuWindow = new MenuWindow();
+                menuWindow.Show();
+
+                Application.Current.Windows.OfType<GameWindow>().First().Close();
+            }
         }
 
         #endregion

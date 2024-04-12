@@ -25,7 +25,7 @@
         <Border 
             Grid.Column="0"
             BorderThickness="1"
-            BorderBrush="{Binding MyTheme.NormalBorderColor}"
+            BorderBrush="{Binding MySettings.MyTheme.NormalBorderColor}"
             HorizontalAlignment="Right"
             VerticalAlignment="Center">
             <ItemsControl
@@ -90,7 +90,7 @@
                         />
 
                 <Label
-                    Content="{Binding CurrentPieceTurn}"
+                    Content="{Binding CurrentPlayerTurn}"
                     FontSize="30"
                     BorderBrush="Black"
                     BorderThickness="0,0,0,1"
