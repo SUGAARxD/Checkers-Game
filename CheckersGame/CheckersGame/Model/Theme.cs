@@ -3,7 +3,7 @@ using CheckersGame.ViewModel;
 
 namespace CheckersGame.Model
 {
-    public class Theme : Base
+    public class Theme : BaseNotify
     {
         #region Properties and members
 

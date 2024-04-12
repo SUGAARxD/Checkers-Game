@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace CheckersGame.Model
 {
-    internal class BoardCellModel : Base
+    internal class BoardCellModel : BaseNotify
     {
         public BoardCellModel()
         {
@@ -21,6 +21,7 @@ namespace CheckersGame.Model
 
         public int XPos { get; set; }
         public int YPos { get; set; }
+        public string Color { get; set; } = "";
 
         private ImageSource _backgroundImage;
         public ImageSource BackgroundImage 

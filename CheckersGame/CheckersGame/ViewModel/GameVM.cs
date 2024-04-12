@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace CheckersGame.ViewModel
 {
-    internal class GameVM : Base
+    internal class GameVM : BaseNotify
     {
         public GameVM()
         {
@@ -84,6 +84,8 @@ namespace CheckersGame.ViewModel
             }
         }
 
+        private bool _canChangeTheColor;
+        private bool _isMultipleJumpActive;
 
         #endregion
 
@@ -120,6 +122,8 @@ namespace CheckersGame.ViewModel
             }
             _availableMoves = new List<Tuple<int, int>>();
             SelectedPiece = null;
+            _canChangeTheColor = false;
+            _isMultipleJumpActive = false;
         }
 
         private void UpdateBoard()
@@ -143,6 +147,8 @@ namespace CheckersGame.ViewModel
 
                                 NumberOfWhitePieces++;
 
+                                Board[index][jndex].Color = "white";
+
                                 if (_game.IsPieceKing(index, jndex))
                                     Board[index][jndex].PieceImage = GetImage(_theme.WhiteKingImagePath);
                                 else
@@ -153,6 +159,8 @@ namespace CheckersGame.ViewModel
                             case PieceType.RedPiece:
 
                                 NumberOfRedPieces++;
+
+                                Board[index][jndex].Color = "red";
 
                                 if (_game.IsPieceKing(index, jndex))
                                     Board[index][jndex].PieceImage = GetImage(_theme.RedKingImagePath);
@@ -188,11 +196,14 @@ namespace CheckersGame.ViewModel
 
             if (SelectedPiece == null && !_game.PieceIsNull(clickedCell.XPos, clickedCell.YPos))
             {
-                SelectedPiece = clickedCell;
-                SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
+                if (clickedCell.Color == CurrentPieceTurn)
+                {
+                    SelectedPiece = clickedCell;
+                    SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
 
-                _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
-                ColorAvailableMovesBorder();
+                    _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
+                    ColorAvailableMovesBorder();
+                }
             }
             else
             {
@@ -201,10 +212,43 @@ namespace CheckersGame.ViewModel
 
                 if (IsInAvailableMoves(clickedCell))
                 {
+
                     _game.MovePiece(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos));
                     UpdateBoard();
+
+                    if (_game.AllowMultipleJump == true)
+                    {
+                        if (_game.IsTwoCellsDifference(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos)))
+                        {
+                            ResetBordersColor();
+                            SelectedPiece = clickedCell;
+
+                            _availableMoves = _game.AvailableMoves(SelectedPiece.XPos, SelectedPiece.YPos);
+                            UpdateAvailableMovesForMultipleJumps();
+                            if (_availableMoves.Count > 0)
+                            {
+                                SelectedPiece.CellBorderColor = _theme.SelectedCellBorderColor;
+                                ColorAvailableMovesBorder();
+                                _isMultipleJumpActive = true;
+                                return;
+                            }
+                            _isMultipleJumpActive = false;
+                        }
+                    }
+                    _canChangeTheColor = true;
+
                 }
-                Reset();
+
+                if (_isMultipleJumpActive == true)
+                    return;
+
+                SelectedPiece = null;
+                ResetBordersColor();
+                if (_canChangeTheColor == true)
+                {
+                    _canChangeTheColor = false;
+                    CurrentPieceTurn = (CurrentPieceTurn == "white") ? "red" : "white";
+                }
             }
         }
 
@@ -216,9 +260,8 @@ namespace CheckersGame.ViewModel
             }
         }
 
-        private void Reset()
+        private void ResetBordersColor()
         {
-            SelectedPiece = null;
             for (int index = 0; index < GameModel.numberOfLines; index++)
             {
                 for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
@@ -236,6 +279,21 @@ namespace CheckersGame.ViewModel
                     return true;
             }
             return false;
+        }
+
+        private void UpdateAvailableMovesForMultipleJumps()
+        {
+            List<Tuple<int, int>> newAvailableMoves = new List<Tuple<int, int>>();
+
+            foreach (var move in _availableMoves)
+            {
+                if (_game.IsTwoCellsDifference(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(move.Item1, move.Item2)))
+                {
+                    newAvailableMoves.Add(move);
+                }
+            }
+            _availableMoves = newAvailableMoves;
+
         }
 
         #endregion

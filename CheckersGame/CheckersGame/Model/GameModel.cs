@@ -60,7 +60,7 @@ namespace CheckersGame.Model
 
         public void MovePiece(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
         {
-            if (PieceMovedTwoCells(prevPosition, newPosition))
+            if (IsTwoCellsDifference(prevPosition, newPosition))
             {
                 _board[(prevPosition.Item1 + newPosition.Item1) / 2][(prevPosition.Item2 + newPosition.Item2) / 2] = null;
             }
@@ -197,7 +197,7 @@ namespace CheckersGame.Model
             return _board[xPos][yPos].IsKing;
         }
 
-        public bool PieceMovedTwoCells(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
+        public bool IsTwoCellsDifference(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
         {
             int xDifference = Math.Abs(prevPosition.Item1 - newPosition.Item1);
             int yDifference = Math.Abs(prevPosition.Item2 - newPosition.Item2);
