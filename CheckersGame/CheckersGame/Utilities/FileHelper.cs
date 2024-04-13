@@ -1,6 +1,7 @@
 ﻿
 using CheckersGame.Model;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
@@ -55,10 +56,14 @@ namespace CheckersGame.Utilities
             File.WriteAllText(path, json);
         }
 
-        public static void UpdateWins(string winnerColor)
+        public static void UpdateWins(string winnerColor, int numberOfWinnerPiecesLeft)
         {
             Dictionary<string, int> wins = GetStatistics();
             wins[winnerColor] += 1;
+            if (winnerColor == "white")
+                wins["MaxNumberOfWhitePiecesLeft"] = Math.Max(numberOfWinnerPiecesLeft, wins["MaxNumberOfWhitePiecesLeft"]);
+            else
+                wins["MaxNumberOfRedPiecesLeft"] = Math.Max(numberOfWinnerPiecesLeft, wins["MaxNumberOfRedPiecesLeft"]);
             UpdateJson(wins, _statisticsJsonPath);
         }
 
@@ -75,6 +80,15 @@ namespace CheckersGame.Utilities
                 return null;
             return new ImageSourceConverter()
                 .ConvertFromString(System.IO.Path.GetFullPath(imagePath)) as ImageSource;
+        }
+
+        public static void SaveGame(SavedGameModel save)
+        {
+            UpdateJson(save, "..\\..\\Resources\\Saves\\testSave.json");
+        }
+        public static void LoadGame(SavedGameModel save, string path)
+        {
+            ReadFromJson<SavedGameModel>(ref save, path);
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace CheckersGame.ViewModel
 
         #region Properties and members
 
-        private readonly string _savesFolderPath = "..\\..\\Saves";
+        private readonly string _savesFolderPath = "..\\..\\Resources\\Saves";
         public ObservableCollection<string> Games { get; set; }
 
         public string SelectedListBoxItem { get; set; }

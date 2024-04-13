@@ -289,17 +289,24 @@ namespace CheckersGame.ViewModel
         private void VerifyIfGameEnds()
         {
             string winner = string.Empty;
+            int numberOfWinnerPiecesLeft = 0;
             if (NumberOfWhitePieces == 0 || !_game.CanMakeAMove(PieceType.WhitePiece))
+            {
                 winner = "red";
+                numberOfWinnerPiecesLeft = NumberOfRedPieces;
+            }
             else if (NumberOfRedPieces == 0 || !_game.CanMakeAMove(PieceType.RedPiece))
+            {
                 winner = "white";
+                numberOfWinnerPiecesLeft = NumberOfWhitePieces;
+            }
 
             if (!string.IsNullOrEmpty(winner))
             {
 
                 ResetBordersColor();
 
-                FileHelper.UpdateWins(winner);
+                FileHelper.UpdateWins(winner, numberOfWinnerPiecesLeft);
 
                 if (winner == "white")
                 {

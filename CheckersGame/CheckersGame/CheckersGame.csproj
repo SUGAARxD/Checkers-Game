@@ -70,6 +70,7 @@
     <Compile Include="Model\PieceType.cs" />
     <Compile Include="Model\BoardCellModel.cs" />
     <Compile Include="Model\CustomSettings.cs" />
+    <Compile Include="Model\SavedGameModel.cs" />
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="ViewModel\BaseNotify.cs" />
@@ -124,6 +125,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Database\Statistics.json" />
+    <None Include="Resources\Saves\jsconfig1.json" />
+    <None Include="Resources\Saves\jsconfig2.json" />
     <None Include="Resources\Settings\Settings.json" />
     <None Include="Resources\Themes\ThemeNumber.json" />
     <None Include="Resources\Themes\Themes.json" />

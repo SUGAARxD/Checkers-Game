@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CheckersGame.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CheckersGame.Model
 {
@@ -8,6 +10,13 @@ namespace CheckersGame.Model
         public GameModel()
         {
             InitBoard();
+        }
+
+        public GameModel(SavedGameModel save)
+        {
+            ReconstructBoard(save.Pieces);
+            StarterPlayerColor = save.StarterPlayerColor;
+            AllowMultipleJump = save.AllowMultipleJump;
         }
 
         #region Properties and members
@@ -54,9 +63,17 @@ namespace CheckersGame.Model
             }
         }
 
-        public List<List<PieceModel>> GetBoard()
+        private void ReconstructBoard(List<Tuple<PieceModel, int, int>> pieces)
         {
-            return _board;
+            _board = Enumerable.Range(0, numberOfLines)
+                .Select(_ => Enumerable.Repeat<PieceModel>(null, numberOfColumns).ToList()).ToList();
+            foreach(var item in pieces)
+            {
+                var (piece, xPos, yPos) = item;
+
+                _board[xPos][yPos] = piece;
+
+            }
         }
 
         public void MovePiece(Tuple<int, int> prevPosition, Tuple<int, int> newPosition)
@@ -112,7 +129,7 @@ namespace CheckersGame.Model
             return availableMoves;
         }
 
-        private void UpAvailableMoves(Tuple<int, int> piece, PieceType enemyType, ref List<Tuple<int,int>> availableMoves)
+        private void UpAvailableMoves(Tuple<int, int> piece, PieceType enemyType, ref List<Tuple<int, int>> availableMoves)
         {
             if (piece.Item1 > 0)
             {
@@ -224,6 +241,24 @@ namespace CheckersGame.Model
             }
 
             return false;
+        }
+
+        private List<Tuple<PieceModel, int, int>> GetRemainingPieces()
+        {
+            List<Tuple<PieceModel, int, int>> pieces = new List<Tuple<PieceModel, int, int>>();
+
+            return pieces;
+        }
+
+        public void SaveGame()
+        {
+            SavedGameModel save = new SavedGameModel
+            {
+                StarterPlayerColor = StarterPlayerColor,
+                AllowMultipleJump = AllowMultipleJump,
+                Pieces = GetRemainingPieces()
+            };
+            FileHelper.SaveGame(save);
         }
 
         #endregion

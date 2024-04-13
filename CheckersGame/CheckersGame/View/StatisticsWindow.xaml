@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CheckersGame.View"
         xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="StatisticsWindow" Height="300" Width="400"
+        Title="StatisticsWindow" Height="350" Width="500"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
 
@@ -28,7 +28,23 @@
                 BorderThickness="0,0,0,1"
                 />
             <Label
+                Content="{Binding MaxNumberOfWhitePiecesLeftLabel}"
+                Margin="0,0,0,10"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+            
+            <Label
                 Content="{Binding RedWinsLabel}"
+                Margin="0,10,0,10"
+                FontSize="30"
+                BorderBrush="Black"
+                BorderThickness="0,0,0,1"
+                />
+            <Label
+                Content="{Binding MaxNumberOfRedPiecesLeftLabel}"
+                Margin="0,0,0,10"
                 FontSize="30"
                 BorderBrush="Black"
                 BorderThickness="0,0,0,1"

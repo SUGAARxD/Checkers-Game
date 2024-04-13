@@ -3,13 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CheckersGame.View"
+        xmlns:local="clr-namespace:CheckersGame.View" 
         mc:Ignorable="d"
-        Title="CreditsWindow" Height="500" Width="600"
+        Title="CreditsWindow" Height="400" Width="500"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
-    
+
     <Grid>
+        
+        <Border
+            BorderThickness="5"
+            BorderBrush="DarkRed"
+            Margin="20">
+
+            <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            >
+
+                <Label
+                    Content="Frincu Marian"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,10"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                    />
+                
+                <Label
+                    Content="10LF222"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,10"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                    />
+
+                <Label
+                    Content="vasile.frincu@student.unitbv.ro"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,0"
+                    FontSize="30"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1"
+                    />
+                
+            </StackPanel>
+            
+        </Border>
         
     </Grid>
 
