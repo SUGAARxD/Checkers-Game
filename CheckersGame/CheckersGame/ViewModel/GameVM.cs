@@ -1,12 +1,14 @@
 ﻿using CheckersGame.Model;
-using CheckersGame.Properties;
 using CheckersGame.Utilities;
 using CheckersGame.View;
 using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
+using System.IO;
 
 namespace CheckersGame.ViewModel
 {
@@ -16,19 +18,19 @@ namespace CheckersGame.ViewModel
         {
         }
 
-        public GameVM(bool allowMultipleJump, CustomSettings settings)
+        public GameVM(CustomSettings settings)
         {
             _settings = settings;
             _game = new GameModel();
             Init();
             UpdateBoard();
-            _game.AllowMultipleJump = allowMultipleJump;
+            _game.AllowMultipleJump = _settings.AllowMultipleJump;
         }
 
-        public GameVM(object game, CustomSettings settings)
+        public GameVM(object save, CustomSettings settings)
         {
             _settings = settings;
-            _game = (GameModel)game;
+            _game = new GameModel((SavedGameModel)save);
             Init();
             UpdateBoard();
         }
@@ -92,6 +94,64 @@ namespace CheckersGame.ViewModel
 
         #endregion
 
+        #region Commands
+
+        private ICommand _saveGameCommand;
+        public ICommand SaveGameCommand
+        {
+            get
+            {
+                if (_saveGameCommand == null)
+                    _saveGameCommand = new RelayCommand(ExecuteSaveGame);
+                return _saveGameCommand;
+            }
+        }
+
+        private void ExecuteSaveGame(object parameter)
+        {
+            string saveName;
+            DialogBox dialogBox = new DialogBox("Enter save name", "Save");
+            dialogBox.ShowDialog();
+            saveName = dialogBox.GetText();
+
+            if (string.IsNullOrEmpty(saveName))
+                return;
+
+            string pattern = @"^[a-zA-Z0-9]+(?:_[a-zA-Z0-9]+)*$";
+            if (!Regex.IsMatch(saveName, pattern))
+            {
+                MessageBox.Show("Invalid name");
+                return;
+            }
+
+            if (FileHelper.SaveExists(saveName))
+            {
+                if (MessageBox.Show("Save already exists!\nDo you want to overwrite it?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                    return;
+            }
+
+            _game.SaveGame(saveName);
+        }
+
+        private ICommand _loadGameCommand;
+        public ICommand LoadGameCommand
+        {
+            get
+            {
+                if (_loadGameCommand == null)
+                    _loadGameCommand = new RelayCommand(ExecuteLoadGame);
+                return _loadGameCommand;
+            }
+        }
+
+        private void ExecuteLoadGame(object parameter)
+        {
+            LoadGameWindow loadGameWindow = new LoadGameWindow(_settings);
+            loadGameWindow.Show();
+        }
+
+        #endregion
+
         #region Methods
 
         private void Init()
@@ -127,7 +187,7 @@ namespace CheckersGame.ViewModel
             SelectedPiece = null;
             _canChangeTheColor = false;
             _isMultipleJumpActive = false;
-            CurrentPlayerTurn = _game.StarterPlayerColor;
+            CurrentPlayerTurn = _game.CurrentPlayerColor;
         }
 
         private void UpdateBoard()
@@ -238,6 +298,7 @@ namespace CheckersGame.ViewModel
                 {
                     _canChangeTheColor = false;
                     CurrentPlayerTurn = (CurrentPlayerTurn == "white") ? "red" : "white";
+                    _game.CurrentPlayerColor = CurrentPlayerTurn;
                 }
             }
         }

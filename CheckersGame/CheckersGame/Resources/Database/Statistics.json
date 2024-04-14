@@ -1,6 +1,1 @@
-{
-  "white": 0,
-  "MaxNumberOfWhitePiecesLeft": 0,
-  "red": 0,
-  "MaxNumberOfRedPiecesLeft": 0
-}
+{"white":2,"MaxNumberOfWhitePiecesLeft":5,"red":5,"MaxNumberOfRedPiecesLeft":8}

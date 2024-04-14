@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AttachedCommandBehavior, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AttachedCommandBehavior.2.0.0.0\lib\net35\AttachedCommandBehavior.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -74,6 +71,7 @@
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="ViewModel\BaseNotify.cs" />
+    <Compile Include="ViewModel\DialogBoxVM.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />
     <Compile Include="ViewModel\MenuVM.cs" />
@@ -81,6 +79,9 @@
     <Compile Include="ViewModel\StatisticsVM.cs" />
     <Compile Include="View\CreditsWindow.xaml.cs">
       <DependentUpon>CreditsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DialogBox.xaml.cs">
+      <DependentUpon>DialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
@@ -125,8 +126,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Database\Statistics.json" />
-    <None Include="Resources\Saves\jsconfig1.json" />
-    <None Include="Resources\Saves\jsconfig2.json" />
+    <None Include="Resources\Saves\s1.json" />
     <None Include="Resources\Settings\Settings.json" />
     <None Include="Resources\Themes\ThemeNumber.json" />
     <None Include="Resources\Themes\Themes.json" />
@@ -139,6 +139,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\CreditsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DialogBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

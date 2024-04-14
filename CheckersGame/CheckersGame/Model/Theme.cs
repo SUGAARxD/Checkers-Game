@@ -7,6 +7,17 @@ namespace CheckersGame.Model
     {
         #region Properties and members
 
+        private string _menuBackgroundColor;
+        public string MenuBackgroundColor
+        {
+            get => _menuBackgroundColor;
+            set
+            {
+                _menuBackgroundColor = value;
+                NotifyPropertyChanged(nameof(MenuBackgroundColor));
+            }
+        }
+
         private string _normalBorderColor;
         public string NormalBorderColor
         {

@@ -1,5 +1,6 @@
 [
   {
+    "MenuBackgroundColor": "#f4f4f4",
     "NormalBorderColor": "#000000",
     "AvailableMoveBorderColor": "#7e00de",
     "SelectedCellBorderColor": "#00f21d",

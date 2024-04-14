@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
         xmlns:vm="clr-namespace:CheckersGame.ViewModel"
-        xmlns:behavior="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
         mc:Ignorable="d"
         Title="Checkers" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
@@ -21,7 +20,42 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
+        <Menu
+            Background="{Binding MySettings.MyTheme.MenuBackgroundColor}"
+            Width="205"
+            Height="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top">
+
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+
+            <MenuItem
+                Header="Save"
+                FontSize="20"
+                Width="60"
+                Command="{Binding SaveGameCommand}"
+                />
+
+            <MenuItem
+                Header="Load"
+                FontSize="20"
+                Width="60"
+                Command="{Binding LoadGameCommand}"
+                />
+
+            <MenuItem
+                Header="Settings"
+                FontSize="20"
+                Width="85"
+                />
+
+        </Menu>
+
         <Border 
             Grid.Column="0"
             BorderThickness="1"
@@ -107,16 +141,16 @@
                     BorderBrush="Black"
                     BorderThickness="0,0,0,1"
                         />
-            
+
                 <Label
                     Content="{Binding NumberOfWhitePieces}"
                     FontSize="30"
                     BorderBrush="Black"
                     BorderThickness="0,0,0,1"
                     />
-                
+
             </StackPanel>
-            
+
             <StackPanel
                 Orientation="Horizontal">
 
@@ -137,7 +171,6 @@
             </StackPanel>
 
         </StackPanel>
-        
     </Grid>
 
 </Window>

@@ -15,7 +15,7 @@ namespace CheckersGame.Model
         public GameModel(SavedGameModel save)
         {
             ReconstructBoard(save.Pieces);
-            StarterPlayerColor = save.StarterPlayerColor;
+            CurrentPlayerColor = save.CurrentPlayerColor;
             AllowMultipleJump = save.AllowMultipleJump;
         }
 
@@ -23,7 +23,7 @@ namespace CheckersGame.Model
 
         private List<List<PieceModel>> _board;
         public bool AllowMultipleJump { get; set; }
-        public string StarterPlayerColor { get; set; } = "red";
+        public string CurrentPlayerColor { get; set; } = "red";
 
         public static readonly int numberOfLines = 8;
         public static readonly int numberOfColumns = 8;
@@ -247,18 +247,30 @@ namespace CheckersGame.Model
         {
             List<Tuple<PieceModel, int, int>> pieces = new List<Tuple<PieceModel, int, int>>();
 
+            for (int index = 0; index < numberOfLines; index++)
+            {
+                for (int jndex = 0; jndex < numberOfColumns; jndex++)
+                {
+                    PieceModel piece = _board[index][jndex];
+                    if (piece != null)
+                    {
+                        pieces.Add(Tuple.Create(piece, index, jndex));
+                    }
+                }
+            }
+
             return pieces;
         }
 
-        public void SaveGame()
+        public void SaveGame(string saveName)
         {
             SavedGameModel save = new SavedGameModel
             {
-                StarterPlayerColor = StarterPlayerColor,
+                CurrentPlayerColor = CurrentPlayerColor,
                 AllowMultipleJump = AllowMultipleJump,
                 Pieces = GetRemainingPieces()
             };
-            FileHelper.SaveGame(save);
+            FileHelper.SaveGame(save, saveName);
         }
 
         #endregion

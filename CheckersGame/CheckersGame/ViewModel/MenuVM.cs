@@ -45,20 +45,10 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteNewGame(object parameter)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Do you want to allow Multiple Jump?",
-                "Multiple Jump", 
-                MessageBoxButton.YesNoCancel);
-
-            if (result == MessageBoxResult.Cancel)
-                return;
-
-            bool allowMultipleJump = (result == MessageBoxResult.Yes);
-            GameWindow gameWindow = new GameWindow(allowMultipleJump, _settings);
+            GameWindow gameWindow = new GameWindow(_settings);
             gameWindow.Show();
 
             Application.Current.Windows.OfType<MenuWindow>().First().Close();
-
         }
 
         private ICommand _loadGameCommand;
@@ -78,8 +68,8 @@ namespace CheckersGame.ViewModel
             if (lastOpenedWindow != null)
                 lastOpenedWindow.Close();
 
-            LoadGameWindow loadGameWindow = new LoadGameWindow();
-            loadGameWindow.Show();
+            LoadGameWindow loadGameWindow = new LoadGameWindow(_settings);
+            loadGameWindow.ShowDialog();
         }
 
         private ICommand _howToPlayCommand;
@@ -115,9 +105,7 @@ namespace CheckersGame.ViewModel
         private void ExecuteSettings(object parameter)
         {
             SettingsWindow settingsWindow = new SettingsWindow();
-            settingsWindow.Show();
-
-            Application.Current.Windows.OfType<MenuWindow>().First().Close();
+            settingsWindow.ShowDialog();
         }
 
         private ICommand _statisticsCommand;

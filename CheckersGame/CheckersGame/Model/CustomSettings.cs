@@ -9,6 +9,7 @@ namespace CheckersGame.Model
     {
         public CustomSettings()
         {
+            AllowMultipleJump = false;
         }
 
         #region Properties and members
@@ -23,6 +24,17 @@ namespace CheckersGame.Model
             {
                 _myTheme = value;
                 NotifyPropertyChanged(nameof(MyTheme));
+            }
+        }
+
+        private bool _allowMultipleJump;
+        public bool AllowMultipleJump
+        {
+            get => _allowMultipleJump;
+            set
+            {
+                _allowMultipleJump = value;
+                NotifyPropertyChanged(nameof(AllowMultipleJump));
             }
         }
 

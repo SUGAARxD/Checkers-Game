@@ -17,6 +17,8 @@ namespace CheckersGame.Utilities
         private static readonly string _themeNumberJsonPath = "..\\..\\Resources\\Themes\\ThemeNumber.json";
         private static readonly string _themesJsonPath = "..\\..\\Resources\\Themes\\Themes.json";
         private static readonly string _statisticsJsonPath = "..\\..\\Resources\\Database\\Statistics.json";
+        private static readonly string _fileExtension = ".json";
+        public static readonly string _savesFolderPath = "..\\..\\Resources\\Saves";
 
         #endregion
 
@@ -82,13 +84,18 @@ namespace CheckersGame.Utilities
                 .ConvertFromString(System.IO.Path.GetFullPath(imagePath)) as ImageSource;
         }
 
-        public static void SaveGame(SavedGameModel save)
+        public static void SaveGame(SavedGameModel save, string saveName)
         {
-            UpdateJson(save, "..\\..\\Resources\\Saves\\testSave.json");
+            UpdateJson(save, _savesFolderPath + "\\" + saveName + _fileExtension);
         }
-        public static void LoadGame(SavedGameModel save, string path)
+        public static void LoadGame(ref SavedGameModel save, string saveName)
         {
-            ReadFromJson<SavedGameModel>(ref save, path);
+            ReadFromJson<SavedGameModel>(ref save, _savesFolderPath + "\\" + saveName + _fileExtension);
+        }
+
+        public static bool SaveExists(string saveName)
+        {
+            return File.Exists(_savesFolderPath + "\\" + saveName + _fileExtension);
         }
 
         #endregion
