@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.IO;
 
 namespace CheckersGame.ViewModel
 {
@@ -23,7 +22,7 @@ namespace CheckersGame.ViewModel
             _settings = settings;
             _game = new GameModel();
             Init();
-            UpdateBoard();
+            UpdateBoardPiecesPositions();
             _game.AllowMultipleJump = _settings.AllowMultipleJump;
         }
 
@@ -32,7 +31,7 @@ namespace CheckersGame.ViewModel
             _settings = settings;
             _game = new GameModel((SavedGameModel)save);
             Init();
-            UpdateBoard();
+            UpdateBoardPiecesPositions();
         }
 
         #region Properties and members
@@ -150,9 +149,67 @@ namespace CheckersGame.ViewModel
             loadGameWindow.Show();
         }
 
+        private ICommand _settingsCommand;
+        public ICommand SettingsCommand
+        {
+            get
+            {
+                if (_settingsCommand == null)
+                    _settingsCommand = new RelayCommand(ExecuteSettings);
+                return _settingsCommand;
+            }
+        }
+
+        private void ExecuteSettings(object parameter)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow(_settings);
+            settingsWindow.ShowDialog();
+            UpdateBoardPiecesPositions();
+            UpdateBoardBackground();
+            ColorAvailableMovesBorder();
+            if (SelectedPiece != null)
+                SelectedPiece.CellBorderColor = MySettings.MyTheme.SelectedCellBorderColor;
+        }
+
+        private ICommand _exitGameCommand;
+        public ICommand ExitGameCommand
+        {
+            get
+            {
+                if (_exitGameCommand == null)
+                    _exitGameCommand = new RelayCommand(ExecuteExitGame);
+                return _exitGameCommand;
+            }
+        }
+
+        private void ExecuteExitGame(object parameter)
+        {
+            MenuWindow menu = new MenuWindow();
+            menu.Show();
+            Application.Current.Windows.OfType<GameWindow>().First().Close();
+        }
+
         #endregion
 
         #region Methods
+
+        private void UpdateBoardBackground()
+        {
+            for (int index = 0; index < GameModel.numberOfLines; index++)
+            {
+                for (int jndex = 0; jndex < GameModel.numberOfColumns; jndex++)
+                {
+                    if ((index + jndex) % 2 == 0)
+                    {
+                        Board[index][jndex].BackgroundImage = FileHelper.GetImage(MySettings.MyTheme.WhiteSquareImagePath);
+                    }
+                    else
+                    {
+                        Board[index][jndex].BackgroundImage = FileHelper.GetImage(MySettings.MyTheme.BlackSquareImagePath);
+                    }
+                }
+            }
+        }
 
         private void Init()
         {
@@ -190,7 +247,7 @@ namespace CheckersGame.ViewModel
             CurrentPlayerTurn = _game.CurrentPlayerColor;
         }
 
-        private void UpdateBoard()
+        private void UpdateBoardPiecesPositions()
         {
             NumberOfWhitePieces = 0;
             NumberOfRedPieces = 0;
@@ -263,7 +320,7 @@ namespace CheckersGame.ViewModel
                 if (IsInAvailableMoves(clickedCell))
                 {
                     _game.MovePiece(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos));
-                    UpdateBoard();
+                    UpdateBoardPiecesPositions();
                     VerifyIfGameEnds();
 
                     if (_game.IsTwoCellsDifference(Tuple.Create(SelectedPiece.XPos, SelectedPiece.YPos), Tuple.Create(clickedCell.XPos, clickedCell.YPos)))
@@ -294,6 +351,7 @@ namespace CheckersGame.ViewModel
 
                 SelectedPiece = null;
                 ResetBordersColor();
+                _availableMoves.Clear();
                 if (_canChangeTheColor == true)
                 {
                     _canChangeTheColor = false;

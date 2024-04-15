@@ -71,11 +71,14 @@
     <Compile Include="Model\Theme.cs" />
     <Compile Include="Utilities\FileHelper.cs" />
     <Compile Include="ViewModel\BaseNotify.cs" />
+    <Compile Include="ViewModel\CreditsVM.cs" />
     <Compile Include="ViewModel\DialogBoxVM.cs" />
     <Compile Include="ViewModel\GameVM.cs" />
+    <Compile Include="ViewModel\HowToPlayVM.cs" />
     <Compile Include="ViewModel\LoadGameVM.cs" />
     <Compile Include="ViewModel\MenuVM.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\SettingsVM.cs" />
     <Compile Include="ViewModel\StatisticsVM.cs" />
     <Compile Include="View\CreditsWindow.xaml.cs">
       <DependentUpon>CreditsWindow.xaml</DependentUpon>
@@ -126,8 +129,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\Database\Statistics.json" />
-    <None Include="Resources\Saves\s1.json" />
-    <None Include="Resources\Settings\Settings.json" />
+    <None Include="Resources\Settings\AllowMultipleJump.json" />
     <None Include="Resources\Themes\ThemeNumber.json" />
     <None Include="Resources\Themes\Themes.json" />
   </ItemGroup>
@@ -135,7 +137,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Saves\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\CreditsWindow.xaml">

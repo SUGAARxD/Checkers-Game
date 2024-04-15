@@ -4,6 +4,7 @@ using CheckersGame.View;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CheckersGame.ViewModel
 {
@@ -11,20 +12,33 @@ namespace CheckersGame.ViewModel
     {
         public MenuVM()
         {
-            _settings = new CustomSettings();
-            FileHelper.InitSettings(ref _settings);
+            _mySettings = new CustomSettings();
+            FileHelper.InitSettings(ref _mySettings);
+            MySettings = _mySettings;
         }
 
         #region Properties and members
 
-        private CustomSettings _settings;
-        public CustomSettings Settings
+        private CustomSettings _mySettings;
+        public CustomSettings MySettings
         {
-            get => _settings;
+            get => _mySettings;
             set
             {
-                _settings = value;
-                NotifyPropertyChanged(nameof(Settings));
+                _mySettings = value;
+                MenuImage = FileHelper.GetImage(MySettings.MyTheme.MenuImagePath);
+                NotifyPropertyChanged(nameof(MySettings));
+            }
+        }
+
+        private ImageSource _menuImage;
+        public ImageSource MenuImage
+        {
+            get => _menuImage;
+            set
+            {
+                _menuImage = value;
+                NotifyPropertyChanged(nameof(MenuImage));
             }
         }
 
@@ -45,7 +59,7 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteNewGame(object parameter)
         {
-            GameWindow gameWindow = new GameWindow(_settings);
+            GameWindow gameWindow = new GameWindow(_mySettings);
             gameWindow.Show();
 
             Application.Current.Windows.OfType<MenuWindow>().First().Close();
@@ -64,11 +78,7 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteLoadGame(object parameter)
         {
-            LoadGameWindow lastOpenedWindow= Application.Current.Windows.OfType<LoadGameWindow>().FirstOrDefault();
-            if (lastOpenedWindow != null)
-                lastOpenedWindow.Close();
-
-            LoadGameWindow loadGameWindow = new LoadGameWindow(_settings);
+            LoadGameWindow loadGameWindow = new LoadGameWindow(_mySettings);
             loadGameWindow.ShowDialog();
         }
 
@@ -85,10 +95,8 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteHowToPlay(object parameter)
         {
-            HowToPlayWindow howToPlayWindow = new HowToPlayWindow();
-            howToPlayWindow.Show();
-
-            Application.Current.Windows.OfType<MenuWindow>().First().Close();
+            HowToPlayWindow howToPlayWindow = new HowToPlayWindow(_mySettings);
+            howToPlayWindow.ShowDialog();
         }
 
         private ICommand _settingsCommand;
@@ -104,8 +112,9 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteSettings(object parameter)
         {
-            SettingsWindow settingsWindow = new SettingsWindow();
+            SettingsWindow settingsWindow = new SettingsWindow(_mySettings);
             settingsWindow.ShowDialog();
+            MySettings = _mySettings;
         }
 
         private ICommand _statisticsCommand;
@@ -121,12 +130,8 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteStatistics(object parameter)
         {
-            StatisticsWindow lastOpenedWindow = Application.Current.Windows.OfType<StatisticsWindow>().FirstOrDefault();
-            if (lastOpenedWindow != null)
-                lastOpenedWindow.Close();
-
-            StatisticsWindow statisticsWindow = new StatisticsWindow();
-            statisticsWindow.Show();
+            StatisticsWindow statisticsWindow = new StatisticsWindow(_mySettings);
+            statisticsWindow.ShowDialog();
         }
 
         private ICommand _creditsCommand;
@@ -142,12 +147,8 @@ namespace CheckersGame.ViewModel
 
         private void ExecuteCredits(object parameter)
         {
-            CreditsWindow lastOpenedWindow = Application.Current.Windows.OfType<CreditsWindow>().FirstOrDefault();
-            if (lastOpenedWindow != null)
-                lastOpenedWindow.Close();
-
-            CreditsWindow creditsWindow = new CreditsWindow();
-            creditsWindow.Show();
+            CreditsWindow creditsWindow = new CreditsWindow(_mySettings);
+            creditsWindow.ShowDialog();
         }
 
         #endregion

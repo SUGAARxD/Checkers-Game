@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:CheckersGame.View"
         xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="StatisticsWindow" Height="350" Width="500"
+        Title="Statistics" Height="350" Width="500"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
 
     <Window.DataContext>
         <vm:StatisticsVM/>

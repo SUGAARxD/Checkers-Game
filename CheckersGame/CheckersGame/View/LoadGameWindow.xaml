@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:CheckersGame.View"
         xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="LoadGameWindow" Height="600" Width="500"
+        Title="Load Game" Height="600" Width="500"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
 
     <Window.DataContext>
         <vm:LoadGameVM/>
@@ -24,8 +25,9 @@
         <ListBox
             Grid.Row="0"
             FontSize="30"
-            ItemsSource="{Binding Games}"
+            ItemsSource="{Binding SavedGames}"
             SelectedItem="{Binding SelectedListBoxItem}"
+            Background="{Binding MySettings.MyTheme.WindowBackgroundColor}"
             />
 
         <StackPanel
@@ -39,6 +41,8 @@
                 Width="100"
                 FontSize="30"
                 Command="{Binding CancelCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -47,6 +51,8 @@
                 FontSize="30"
                 Margin="20,0,0,0"
                 Command="{Binding LoadGameCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
             
         </StackPanel>

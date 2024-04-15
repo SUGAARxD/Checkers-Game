@@ -4,13 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
+        xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="HowToPlayWindow" Height="720" Width="1280"
+        Title="How To Play" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
-    
+        ResizeMode="CanMinimize"
+        Background="{Binding MySetting.MyTheme.WindowBackgroundColor}">
+
+    <Window.DataContext>
+        <vm:HowToPlayVM/>
+    </Window.DataContext>
+
     <Grid>
         
+        <TextBlock
+            Text="{Binding GameDescription}"
+            TextWrapping="Wrap" Width="900"
+            Height="600"
+            FontSize="23"
+            />
+
     </Grid>
     
 </Window>

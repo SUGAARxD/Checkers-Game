@@ -9,12 +9,11 @@ namespace CheckersGame.Model
     {
         public CustomSettings()
         {
-            AllowMultipleJump = false;
         }
 
         #region Properties and members
 
-        public List<Theme> _themes = new List<Theme>();
+        public List<Theme> Themes { get; set; }
 
         private Theme _myTheme;
         public Theme MyTheme
@@ -44,8 +43,7 @@ namespace CheckersGame.Model
 
         public void LoadTheme(int number)
         {
-            MyTheme = _themes[number];
-            FileHelper.UpdateLastThemeUsedTheme(number);
+            MyTheme = Themes[number];
         }
 
         #endregion

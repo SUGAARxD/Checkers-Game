@@ -4,13 +4,93 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View"
+        xmlns:vm="clr-namespace:CheckersGame.ViewModel"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="720" Width="1280"
+        Title="Settings" Height="300" Width="550"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
-    
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
+
+    <Window.DataContext>
+        <vm:SettingsVM/>
+    </Window.DataContext>
+
     <Grid>
-        
+
+        <StackPanel
+            VerticalAlignment="Center"
+            Margin="100,0,0,0">
+
+            <StackPanel 
+                Orientation="Horizontal">
+                
+                <Label
+                    Content="Multiple jump"
+                    FontSize="30"/>
+                
+                <StackPanel 
+                    Name="StackPanel1"
+                    Orientation="Horizontal"
+                    Height="30">
+
+                    <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
+                        <CheckBox 
+                            IsChecked="{Binding IsCheckBoxChecked}"/>
+                    </Viewbox>
+
+                </StackPanel>
+                
+            </StackPanel>
+
+            <StackPanel
+                Orientation="Horizontal"
+                Margin="0,0,0,20">
+
+
+                <Label
+                    Content="Theme: "
+                    FontSize="30"
+                    />
+
+                <ComboBox
+                    FontSize="30"
+                    ItemsSource="{Binding ThemeList}"
+                    SelectedItem="{Binding SelectedTheme}"
+                    Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                    BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
+                    />
+
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom">
+
+                <Button
+                    Content="Cancel"
+                    Width="100"
+                    FontSize="30"
+                    Command="{Binding CancelCommand}"
+                    Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                    BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
+                    />
+
+                <Button
+                    Content="Save Changes"
+                    Width="200"
+                    FontSize="30"
+                    Margin="20,0,0,0"
+                    Command="{Binding SaveChangesCommand}"
+                    Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                    BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
+                    />
+
+            </StackPanel>
+
+        </StackPanel>
+
     </Grid>
-    
+
 </Window>

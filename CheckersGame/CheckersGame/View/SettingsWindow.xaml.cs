@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using CheckersGame.Model;
+using CheckersGame.ViewModel;
+using System.Windows;
 
 namespace CheckersGame.View
 {
@@ -7,9 +9,10 @@ namespace CheckersGame.View
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        public SettingsWindow()
+        public SettingsWindow(CustomSettings settings)
         {
             InitializeComponent();
+            DataContext = new SettingsVM(settings);
         }
     }
 }

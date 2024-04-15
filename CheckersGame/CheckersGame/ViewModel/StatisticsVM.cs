@@ -1,12 +1,19 @@
-﻿using CheckersGame.Utilities;
+﻿using CheckersGame.Model;
+using CheckersGame.Utilities;
 using System.Collections.Generic;
 
 namespace CheckersGame.ViewModel
 {
     internal class StatisticsVM
     {
+
         public StatisticsVM()
         {
+        }
+
+        public StatisticsVM(CustomSettings settings)
+        {
+            MySettings = settings;
             Dictionary<string, int> wins = FileHelper.GetStatistics();
 
             WhiteWinsLabel = $"White won for {wins["white"]} times";
@@ -21,6 +28,7 @@ namespace CheckersGame.ViewModel
         public string MaxNumberOfWhitePiecesLeftLabel { get; set; }
         public string RedWinsLabel { get; set; }
         public string MaxNumberOfRedPiecesLeftLabel { get; set; }
+        public CustomSettings MySettings { get; set; }
 
         #endregion
 

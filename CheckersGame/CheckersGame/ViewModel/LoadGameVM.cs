@@ -3,13 +3,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.IO;
 using CheckersGame.Utilities;
 using CheckersGame.Model;
 
 namespace CheckersGame.ViewModel
 {
-    internal class LoadGameVM : BaseNotify
+    internal class LoadGameVM
     {
         public LoadGameVM()
         {
@@ -17,26 +16,17 @@ namespace CheckersGame.ViewModel
         }
         public LoadGameVM(CustomSettings settings)
         {
-            _settings = settings;
+            MySettings = settings;
             InitListBox();
         }
 
         #region Properties and members
 
-        public ObservableCollection<string> Games { get; set; }
+        public ObservableCollection<string> SavedGames { get; set; }
 
         public string SelectedListBoxItem { get; set; }
 
-        private CustomSettings _settings;
-        public CustomSettings MySettings
-        {
-            get => _settings;
-            set
-            {
-                _settings = value;
-                NotifyPropertyChanged(nameof(MySettings));
-            }
-        }
+        public CustomSettings MySettings { get; set; }
 
         #endregion
 
@@ -83,7 +73,7 @@ namespace CheckersGame.ViewModel
                 MenuWindow lastOpenedMenuWindow = Application.Current.Windows.OfType<MenuWindow>().FirstOrDefault();
                 GameWindow laseOpenedGameWindow = Application.Current.Windows.OfType<GameWindow>().FirstOrDefault();
 
-                GameWindow gameWindow = new GameWindow(save, _settings);
+                GameWindow gameWindow = new GameWindow(save, MySettings);
                 gameWindow.Show();
 
                 if (lastOpenedMenuWindow != null)
@@ -108,20 +98,8 @@ namespace CheckersGame.ViewModel
 
         private void InitListBox()
         {
-            Games = new ObservableCollection<string>();
-            if (Directory.Exists(FileHelper._savesFolderPath))
-            {
-                string[] filesPath = Directory.GetFiles(FileHelper._savesFolderPath);
-
-                foreach (string filePath in filesPath)
-                {
-                    int lastBackSlashIndex = filePath.LastIndexOf('\\');
-                    int lastDotIndex = filePath.LastIndexOf('.');
-
-                    string fileName = filePath.Substring(lastBackSlashIndex + 1, lastDotIndex - lastBackSlashIndex - 1);
-                    Games.Add(fileName);
-                }
-            }
+            SavedGames = new ObservableCollection<string>();
+            FileHelper.InitSavedGames(SavedGames);
         }
 
         #endregion

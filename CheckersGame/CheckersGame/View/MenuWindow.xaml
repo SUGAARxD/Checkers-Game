@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Menu" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
 
     <Window.DataContext>
         <vm:MenuVM/>
@@ -32,6 +33,8 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding NewGameCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -39,6 +42,8 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding LoadGameCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -46,6 +51,8 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding HowToPlayCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -53,6 +60,8 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding SettingsCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -60,6 +69,8 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding StatisticsCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
             <Button
@@ -67,13 +78,17 @@
                 Margin="10"
                 FontSize="30"
                 Command="{Binding CreditsCommand}"
+                Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+                BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
                 />
 
         </StackPanel>
 
         <Image
             Grid.Column="1"
-            Margin="10"
+            Width="602"
+            Height="602"
+            Source="{Binding MenuImage}"
             />
 
     </Grid>

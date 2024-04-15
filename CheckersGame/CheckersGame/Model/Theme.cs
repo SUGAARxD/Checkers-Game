@@ -7,14 +7,47 @@ namespace CheckersGame.Model
     {
         #region Properties and members
 
-        private string _menuBackgroundColor;
-        public string MenuBackgroundColor
+        private string _name;
+        public string Name
         {
-            get => _menuBackgroundColor;
+            get => _name;
             set
             {
-                _menuBackgroundColor = value;
-                NotifyPropertyChanged(nameof(MenuBackgroundColor));
+                _name = value;
+                NotifyPropertyChanged(nameof(Name));
+            }
+        }
+
+        private string _buttonBackgroundColor;
+        public string ButtonBackgroundColor
+        {
+            get => _buttonBackgroundColor;
+            set
+            {
+                _buttonBackgroundColor = value;
+                NotifyPropertyChanged(nameof(ButtonBackgroundColor));
+            }
+        }
+
+        private string _buttonBorderColor;
+        public string ButtonBorderColor
+        {
+            get => _buttonBorderColor;
+            set
+            {
+                _buttonBorderColor = value;
+                NotifyPropertyChanged(nameof(ButtonBorderColor));
+            }
+        }
+
+    private string _windowBackgroundColor;
+        public string WindowBackgroundColor
+        {
+            get => _windowBackgroundColor;
+            set
+            {
+                _windowBackgroundColor = value;
+                NotifyPropertyChanged(nameof(WindowBackgroundColor));
             }
         }
 
@@ -114,6 +147,17 @@ namespace CheckersGame.Model
             {
                 _redKingImagePath = value;
                 NotifyPropertyChanged(nameof(RedKingImagePath));
+            }
+        }
+
+        private string _menuImagePath;
+        public string MenuImagePath
+        {
+            get => _menuImagePath;
+            set
+            {
+                _menuImagePath = value;
+                NotifyPropertyChanged(nameof(MenuImagePath));
             }
         }
 

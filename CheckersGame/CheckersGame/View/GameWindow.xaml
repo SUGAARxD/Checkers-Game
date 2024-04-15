@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Checkers" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
 
     <Window.DataContext>
         <vm:GameVM/>
@@ -22,7 +23,8 @@
         </Grid.ColumnDefinitions>
 
         <Menu
-            Background="{Binding MySettings.MyTheme.MenuBackgroundColor}"
+            Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+            BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
             Width="205"
             Height="30"
             HorizontalAlignment="Left"
@@ -52,9 +54,22 @@
                 Header="Settings"
                 FontSize="20"
                 Width="85"
+                Command="{Binding SettingsCommand}"
                 />
 
         </Menu>
+
+        <Button
+            Grid.Column="1"
+            Content="Exit Game"
+            Width="100"
+            Height="30"
+            FontSize="20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding ExitGameCommand}"
+            Background="{Binding MySettings.MyTheme.ButtonBackgroundColor}"
+            BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"/>
 
         <Border 
             Grid.Column="0"

@@ -4,16 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersGame.View" 
+        xmlns:vm="clr-namespace:CheckersGame.ViewModel" 
         mc:Ignorable="d"
-        Title="CreditsWindow" Height="400" Width="500"
+        Title="Credits" Height="400" Width="500"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize">
+        ResizeMode="CanMinimize"
+        Background="{Binding MySettings.MyTheme.WindowBackgroundColor}">
 
+    <Window.DataContext>
+        <vm:CreditsVM/>
+    </Window.DataContext>
+    
     <Grid>
         
         <Border
             BorderThickness="5"
-            BorderBrush="DarkRed"
+            BorderBrush="{Binding MySettings.MyTheme.ButtonBorderColor}"
             Margin="20">
 
             <StackPanel
@@ -22,7 +28,7 @@
             >
 
                 <Label
-                    Content="Frincu Marian"
+                    Content="{Binding StudentName}"
                     HorizontalAlignment="Center"
                     Margin="0,0,0,10"
                     FontSize="30"
@@ -31,7 +37,7 @@
                     />
                 
                 <Label
-                    Content="10LF222"
+                    Content="{Binding StudentGroup}"
                     HorizontalAlignment="Center"
                     Margin="0,0,0,10"
                     FontSize="30"
@@ -40,7 +46,7 @@
                     />
 
                 <Label
-                    Content="vasile.frincu@student.unitbv.ro"
+                    Content="{Binding StudentInstitutionalMail}"
                     HorizontalAlignment="Center"
                     Margin="0,0,0,0"
                     FontSize="30"
