@@ -83,7 +83,9 @@ namespace CheckersGame.ViewModel
                     laseOpenedGameWindow.Close();
 
                 Application.Current.Windows.OfType<LoadGameWindow>().First().Close();
-                
+
+                MySettings.AllowMultipleJump = save.AllowMultipleJump;
+
                 MessageBox.Show("Load game succesfull!");
             }
             else

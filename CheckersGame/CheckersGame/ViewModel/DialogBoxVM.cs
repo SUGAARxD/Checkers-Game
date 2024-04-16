@@ -8,7 +8,7 @@ namespace CheckersGame.ViewModel
     internal class DialogBoxVM
     {
         public DialogBoxVM()
-        {
+        { 
         }
 
         public DialogBoxVM(string message, string buttonContent)

@@ -44,6 +44,17 @@ namespace CheckersGame.ViewModel
             }
         }
 
+        private bool _isCheckBoxEnabled;
+        public bool IsCheckBoxEnabled
+        {
+            get => _isCheckBoxEnabled;
+            set
+            {
+                _isCheckBoxEnabled = value;
+                NotifyPropertyChanged(nameof(IsCheckBoxEnabled));
+            }
+        }
+
         public ObservableCollection<string> ThemeList { get; set; }
 
         private string _selectedTheme;
@@ -131,6 +142,11 @@ namespace CheckersGame.ViewModel
             {
                 ThemeList.Add(theme.Name);
             }
+
+            if (Application.Current.Windows.OfType<GameWindow>().FirstOrDefault() != null)
+                IsCheckBoxEnabled = false;
+            else
+                IsCheckBoxEnabled = true;
         }
 
         #endregion

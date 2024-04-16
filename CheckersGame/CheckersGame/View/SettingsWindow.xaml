@@ -35,7 +35,8 @@
 
                     <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
                         <CheckBox 
-                            IsChecked="{Binding IsCheckBoxChecked}"/>
+                            IsChecked="{Binding IsCheckBoxChecked}"
+                            IsEnabled="{Binding IsCheckBoxEnabled}"/>
                     </Viewbox>
 
                 </StackPanel>
