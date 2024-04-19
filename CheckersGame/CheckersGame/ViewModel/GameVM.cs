@@ -146,7 +146,7 @@ namespace CheckersGame.ViewModel
         private void ExecuteLoadGame(object parameter)
         {
             LoadGameWindow loadGameWindow = new LoadGameWindow(_settings);
-            loadGameWindow.Show();
+            loadGameWindow.ShowDialog();
         }
 
         private ICommand _settingsCommand;
